@@ -21,7 +21,7 @@ name: Webservice-InterMine
 provides:
   Webservice::InterMine:
     file: lib/Webservice/InterMine.pm
-    version: 0.94
+    version: 0.9401
   Webservice::InterMine::Constraint:
     file: lib/Webservice/InterMine/Constraint.pm
   Webservice::InterMine::Constraint::Binary:
@@ -110,12 +110,6 @@ provides:
     file: lib/Webservice/InterMine/Role/ModelOwner.pm
   Webservice::InterMine::Role::Named:
     file: lib/Webservice/InterMine/Role/Named.pm
-  Webservice::InterMine::Roles::CommonAttributes:
-    file: lib/Webservice/InterMine/Roles/CommonAttributes.pm
-  Webservice::InterMine::Roles::Logical:
-    file: lib/Webservice/InterMine/Roles/Logical.pm
-  Webservice::InterMine::Roles::ModelOwner:
-    file: lib/Webservice/InterMine/Roles/ModelOwner.pm
   Webservice::InterMine::Service:
     file: lib/Webservice/InterMine/Service.pm
   Webservice::InterMine::SortOrder:
@@ -146,4 +140,4 @@ requires:
   perl: v5.8.3
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.94
+version: 0.9401

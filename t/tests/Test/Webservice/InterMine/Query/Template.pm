@@ -156,8 +156,8 @@ sub sort_order_initial_state : Test {
     my $test = shift;
     my $obj = $test->{object};
     is(
-	$obj->sort_order->to_string, 'Employee.name asc',
-	"Sets the sort order correctly",
+        $obj->sort_order, 'Employee.name asc',
+        "Sets the sort order correctly",
     );
 }
 
@@ -222,7 +222,7 @@ sub results_with : Test(14) {
     lives_ok(
 	sub {$results = $obj->results_with();},
 	"Runs results_with with no args OK",
-    );
+    ) or diag( $obj->show_constraints );
     is_xml(
 	$results->[0]->to_xml,
 	$exp_xml,
@@ -244,39 +244,47 @@ sub results_with : Test(14) {
 	[$results->[1], $results->[2]], ['as', undef], "the format arg is correct",
     );
     lives_ok(
-	sub {$results = $obj->results_with(opB => '=');},
-	"runs results with ok with an operator",
+        sub {$results = $obj->results_with(opB => '=');},
+        "runs results with ok with an operator",
     );
     $exp_xml =~ s/BAR/FOO/;
     $exp_xml =~ s/LIKE/=/; #TODO make this test work, now that LIKE has gone
     is_xml(
-	$results->[0]->to_xml,
-	$exp_xml,
-	"The xml comes out as expected",
+        $results->[0]->to_xml,
+        $exp_xml,
+        "The xml comes out as expected",
     );
-   lives_ok(
-	sub {$results = $obj->results_with(valueB => 'QUUX', opB => '=');},
-	"runs results with ok with an operator and a value",
+    lives_ok(
+        sub {$results = $obj->results_with(valueB => 'QUUX', opB => '=');},
+        "runs results with ok with an operator and a value",
     );
     $exp_xml =~ s/FOO/QUUX/;
     is_xml(
-	$results->[0]->to_xml,
-	$exp_xml,
-	"The xml comes out as expected",
+        $results->[0]->to_xml,
+        $exp_xml,
+        "The xml comes out as expected",
     ) or diag($exp_xml);
 
     $exp_xml =~ s/QUUX/ZOP/;
     lives_ok(
-       sub {$results = $obj->results_with(valueB => 'ZOP', opB => '=', as => 'strings');},
-	"runs results with ok with an operator and a value and a format",
+       sub {
+           $results = $obj->results_with(
+               valueB => 'ZOP', 
+               opB => '=', 
+               as => 'strings'
+           );
+       },
+        "runs results with ok with an operator and a value and a format",
     );
     is(
-	$results->[2], 'strings', "the format arg is correct",
+        $results->[2], 
+        'strings', 
+        "the format arg is correct",
     );
     is_xml(
-	$results->[0]->to_xml,
-	$exp_xml,
-	"The xml comes out as expected",
+        $results->[0]->to_xml,
+        $exp_xml,
+        "The xml comes out as expected",
     ) or diag($exp_xml);
 
     throws_ok(

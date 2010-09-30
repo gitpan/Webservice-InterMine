@@ -10,14 +10,12 @@ my $build = Module::Build->new(
     create_makefile_pl   => 'traditional',
     requires             => {
         'perl'                          => '5.8.3',
-        'InterMine::Model',             => 0.94,
-        'InterMine::TypeLibrary',       => 0.94,
-        'Clone'                         => 0.26,
+        'InterMine::Model',             => 0.9401,
+        'InterMine::TypeLibrary',       => 0.9401,
         'List::MoreUtils'               => 0.22,
         'LWP'                           => 5.8,
         'Module::Find'                  => 0.05,
         'Moose'                         => 0.95,
-        'MooseX::Role::Parameterized'   => 0.10,
         'MooseX::Role::WithOverloading' => 0.03,
         'MooseX::Types'                 => 0.22,
         'Text::CSV_XS'                  => 0.62,
@@ -27,8 +25,8 @@ my $build = Module::Build->new(
     },
     recommends => {
         'YAML::Syck'              => 1.07,
-        'Perl::Tidy'              => 20070801,
         'Spreadsheet::WriteExcel' => 0,
+        'Perl::Tidy'                => 20070801,
     },
     build_requires => {
         'Test::Class'               => 0,

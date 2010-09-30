@@ -1,5 +1,12 @@
 package Test::Webservice::InterMine::Query::Scripted;
 
+BEGIN {
+    eval "use Perl::Tidy";
+    if ($@) {
+        __PACKAGE__->SKIP_CLASS( "Perl::Tidy needed for these tests" );
+    }
+}
+
 use base ('Test::Webservice::InterMine::Query::Core');
 use Test::MockObject;
 use Test::More;
@@ -91,7 +98,7 @@ sub sort_order_initial_state : Test {
     my $test = shift;
     my $obj = $test->{object};
     is(
-	$obj->sort_order->to_string, 'Employee.name asc',
+	$obj->sort_order, 'Employee.name asc',
 	"Sets the sort order correctly",
     );
 }

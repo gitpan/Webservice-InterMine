@@ -270,17 +270,16 @@ sub sort_order_initial_state : Test {
 
 }
 
-sub sort_order : Test(6) {
+sub sort_order : Test(5) {
     my $test = shift;
     my $obj  = $test->{object};
     my @view = ('Employee.name', 'Employee.address.address', 'Employee.department.name');
     $obj->add_view(@view);
-    isa_ok($obj->sort_order, 'Webservice::InterMine::SortOrder', "Constructs a sort order correctly");
-    is($obj->sort_order->to_string, 'Employee.name asc', "And sets the default value correctly from the view");
+    is($obj->sort_order, 'Employee.name asc', "And sets the default value correctly from the view");
     $obj->set_sort_order('Employee.department.name');
-    is($obj->sort_order->to_string, 'Employee.department.name asc', "Updates path correctly");
+    is($obj->sort_order, 'Employee.department.name asc', "Updates path correctly");
     $obj->set_sort_order('Employee.department.name', 'desc');
-    is($obj->sort_order->to_string, 'Employee.department.name desc', "Updates direction correctly");
+    is($obj->sort_order, 'Employee.department.name desc', "Updates direction correctly");
     throws_ok(
 	sub {$obj->set_sort_order('Employee.name', 'Around-and-Round')},
 	qr/\(direction\) does not pass the type constraint/,
@@ -317,15 +316,19 @@ sub all_paths : Test(2) {
     );
 
     is_deeply(
-	[sort $obj->all_paths],
-	[sort uniq($test->test_paths)],
+	[sort {$a cmp $b} $obj->all_paths],
+	[sort {$a cmp $b} uniq($test->test_paths)],
 	"Gets all the relevant paths for validation",
     )
-	or diag(explain [sort $obj->all_paths],
-		explain [sort uniq($test->test_paths)]);
+	or diag(explain [sort {$a cmp $b} $obj->all_paths],
+		explain [sort {$a cmp $b} uniq($test->test_paths)]);
 
     $obj->add_view('Employee');
-    is_deeply([sort $obj->all_paths], [sort uniq($test->test_paths)], "Duplicates are ignored");
+    is_deeply(
+        [sort {$a cmp $b} $obj->all_paths], 
+        [sort {$a cmp $b} uniq($test->test_paths)], 
+        "Duplicates are ignored",
+    );
 }
 
 sub suspend_validation : Test(5) {

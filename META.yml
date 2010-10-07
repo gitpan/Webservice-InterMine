@@ -7,7 +7,7 @@ build_requires:
   Test::Exception: 0
   Test::MockObject: 0
   Test::MockObject::Extends: 0
-  Test::More: 0
+  Test::More: 0.9
   Test::XML: 0
   XML::Rules: 0
 configure_requires:
@@ -21,7 +21,7 @@ name: Webservice-InterMine
 provides:
   Webservice::InterMine:
     file: lib/Webservice/InterMine.pm
-    version: 0.9405
+    version: 0.9406
   Webservice::InterMine::Constraint:
     file: lib/Webservice/InterMine/Constraint.pm
   Webservice::InterMine::Constraint::Binary:
@@ -119,7 +119,6 @@ provides:
   Webservice::InterMine::TemplateFactory:
     file: lib/Webservice/InterMine/TemplateFactory.pm
 recommends:
-  Perl::Tidy: 20070801
   Spreadsheet::WriteExcel: 0
   YAML::Syck: 1.07
 requires:
@@ -131,6 +130,7 @@ requires:
   Moose: 0.95
   MooseX::Role::WithOverloading: 0.03
   MooseX::Types: 0.22
+  Perl::Tidy: 20070801
   Text::CSV_XS: 0.62
   URI: 1.37
   XML::DOM: 0
@@ -138,4 +138,4 @@ requires:
   perl: v5.8.3
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.9405
+version: 0.9406

@@ -14,7 +14,6 @@ WriteMakefile
                            'Moose' => '0.95',
                            'MooseX::Role::WithOverloading' => '0.03',
                            'MooseX::Types' => '0.22',
-                           'Perl::Tidy' => 20070801,
                            'Test::Class' => 0,
                            'Test::Exception' => 0,
                            'Test::MockObject' => 0,

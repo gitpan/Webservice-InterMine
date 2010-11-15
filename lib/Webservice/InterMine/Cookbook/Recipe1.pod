@@ -10,7 +10,7 @@ Webservice::InterMine::Cookbook::Recipe1 - The Bare Basics
 
   use Webservice::InterMine ('www.flymine.org/query/service');
 
-  my $query = Webservice::InterMine->new_query;
+  my $query = Webservice::InterMine->new_query();
 
   # Specifying a name and a description is purely optional
   $query->name('Tutorial 1 Query');
@@ -28,7 +28,6 @@ Webservice::InterMine::Cookbook::Recipe1 - The Bare Basics
   $query->sort_order('Organism.taxonId' => 'desc');
 
   print $query->results(as => 'string');
-
 
 =head1 DESCRIPTION
 

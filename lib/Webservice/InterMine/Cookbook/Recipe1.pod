@@ -25,7 +25,7 @@ Webservice::InterMine::Cookbook::Recipe1 - The Bare Basics
 
   $query->add_view('Organism.taxonId');
 
-  $query->sort_order('Organism.taxonId' => 'desc');
+  $query->set_sort_order('Organism.taxonId' => 'desc');
 
   print $query->results(as => 'string');
 
@@ -76,19 +76,19 @@ not have to specify a direction - C<asc> will be the default if none is provided
 The following are all(1) valid ways of defining the sort order, and would all have
 the same result:
 
-  $query->sort_order('Organism.taxonId');
+  $query->set_sort_order('Organism.taxonId');
 
 or
 
-  $query->sort_order('Organism.taxonId', 'asc');
+  $query->set_sort_order('Organism.taxonId', 'asc');
 
 or
 
-  $query->sort_order('Organism.taxonId' => 'asc');
+  $query->set_sort_order('Organism.taxonId' => 'asc');
 
 or
 
-  $query->sort_order(
+  $query->set_sort_order(
       path => 'Organism.taxonId',
       direction => 'asc',
   );

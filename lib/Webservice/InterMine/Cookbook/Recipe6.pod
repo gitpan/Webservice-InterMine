@@ -24,7 +24,7 @@ Webservice::InterMine::Cookbook::Recipe6 - Advanced Results Management
 
   $query->add_view($subj, $obj, $evalue);
 
-  $query->sort_order($evalue => 'desc');
+  $query->set_sort_order($evalue => 'desc');
 
   my $ri = $query->results_iterator();
 

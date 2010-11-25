@@ -68,7 +68,7 @@ sub results_with {
             confess sprintf( $error_format, $_ ) unless $code;
             $new_op_for{$code} = $args{$_};
         } elsif (/^extra_value/) {
-            my ($code) = /^op([A-Z]{1,2})$/;
+            my ($code) = /^extra_value([A-Z]{1,2})$/;
             confess sprintf( $error_format, $_ ) unless $code;
             $new_extra_value_for{$code} = $args{$_};
         } else {

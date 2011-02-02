@@ -21,7 +21,7 @@ name: Webservice-InterMine
 provides:
   Webservice::InterMine:
     file: lib/Webservice/InterMine.pm
-    version: 0.9412
+    version: 0.9500
   Webservice::InterMine::Constraint:
     file: lib/Webservice/InterMine/Constraint.pm
   Webservice::InterMine::Constraint::Binary:
@@ -102,6 +102,8 @@ provides:
     file: lib/Webservice/InterMine/ResultIterator.pm
   Webservice::InterMine::ResultIterator::Role::HTMLTableRow:
     file: lib/Webservice/InterMine/ResultIterator/Role/HTMLTableRow.pm
+  Webservice::InterMine::ResultObject:
+    file: lib/Webservice/InterMine/ResultObject.pm
   Webservice::InterMine::Role::Described:
     file: lib/Webservice/InterMine/Role/Described.pm
   Webservice::InterMine::Role::Logical:
@@ -124,18 +126,21 @@ recommends:
   YAML::Syck: 1.07
 requires:
   InterMine::Model: 0.9401
-  InterMine::TypeLibrary: 0.9401
+  InterMine::TypeLibrary: 0.95
+  JSON: 0
   LWP: 5.8
   List::MoreUtils: 0.22
+  MIME::Base64: 0
   Module::Find: 0.05
   Moose: 0.95
   MooseX::Role::WithOverloading: 0.03
   MooseX::Types: 0.22
-  Text::CSV_XS: 0.62
+  Perl6::Junction: 0
+  Text::CSV: 0
   URI: 1.37
   XML::DOM: 0
   XML::Parser::PerlSAX: 0.08
   perl: v5.8.3
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.9412
+version: 0.9500

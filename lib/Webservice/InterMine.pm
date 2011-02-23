@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = "0.9501";
+our $VERSION = "0.9600";
 
 =head1 NAME
 
@@ -73,7 +73,7 @@ sub import {
     }
 };
 
-=head2 new_query( [$url] )
+=head2 new_query( [\@service_args], [%query_args] )
 
 returns a new query object for you to fill in with constraints before
 being run to get its results. If you pass a url, it constructs a query
@@ -85,13 +85,40 @@ Please see L<Webservice::InterMine::Query>
 
 sub new_query {
     my $class = shift;
-    my %args  = @_;
-    my $roles = delete $args{with};
-    return $class->get_service(%args)->new_query(with => $roles);
+    my $service_args = (ref $_[0] ) ? shift : [];
+    return $class->get_service(@$service_args)->new_query(@_);
 }
 
+=head2 load_query([\@service_args], source_file|source_string => $source, %opts )
 
-=head2 template( $name, [$url] )
+Returns a query object based on xml you have previously saved,
+either as a string or as a file. For a file pass:
+
+  load_query(source_file => $file);
+
+For a string: 
+
+  load_query(source_string => $string);
+
+If you want a specific service, call it thus:
+
+  load_query(service_args => [$name, $user, $pass], source_string => $string);
+
+OR: 
+
+  load_query([$name, $user, $pass], source_string => $string);
+
+Please see L<Webservice::InterMine::Query::Saved>
+
+=cut
+
+sub load_query {
+    my $class = shift;
+    my $service_args = (ref $_[0] ) ? shift : [];
+    return $class->get_service(@$service_args)->new_from_xml(@_);
+}
+
+=head2 template( $name, [\@service_args], [%opts] )
 
 returns the named template (if it exists - if not it returns undef).
 If you pass a url, it returns the named template from the specified webservice.
@@ -103,9 +130,8 @@ Please see L<Webservice::InterMine::Query::Template>
 sub template {
     my $class = shift;
     my $name  = shift;
-    my %args  = @_;
-    my $roles = delete $args{with};
-    return $class->get_service(%args)->template($name, $roles);
+    my $service_args = (ref $_[0] eq 'ARRAY') ? shift : [];
+    return $class->get_service(@$service_args)->template($name, @_);
 }
 
 =head2 saved_query( $name, [$url] ) B<NOT IMPLEMENTED YET>

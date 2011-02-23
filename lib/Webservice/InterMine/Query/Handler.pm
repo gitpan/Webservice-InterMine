@@ -85,10 +85,9 @@ sub start_element {
             and $nameattr
         # we can't test for equality due to the effect of coercion
             and length($query->name) != length($nameattr) );
-        $query->name($nameattr);
-        confess
-          if (
-            $query->model->model_name ne $args->{Attributes}{model} );
+        $query->name($nameattr) if $nameattr;
+        confess "Model name is not suitable for this service"
+          if ( $query->model->model_name ne $args->{Attributes}{model} );
         my $view = $args->{Attributes}{view};
         my @views = split( /[\s,]/, $view );
         confess 'No view in query' unless @views;

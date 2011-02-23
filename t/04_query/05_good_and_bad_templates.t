@@ -114,7 +114,7 @@ my @baddies_errors = (
     'Invalid template: no editable constraints',
     '.* is not in the view',
     'both description and title',
-    '\(name\) does not pass the type constraint',
+    'No name attribute on template node',
     'We have two names and they differ',
     'No constraint with code',
     'Inconsistent query',

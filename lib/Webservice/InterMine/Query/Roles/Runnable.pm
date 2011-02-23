@@ -1,11 +1,12 @@
 package Webservice::InterMine::Query::Roles::Runnable;
 
 use Moose::Role;
-requires qw(view service url);
+requires qw(view service url model);
 
 use MooseX::Types::Moose qw(Str);
 use Perl6::Junction qw/any/;
 use JSON -support_by_pp, -no_export;
+require JSON::PP;
 use Webservice::InterMine::Service;
 use Webservice::InterMine::ResultObject;
 

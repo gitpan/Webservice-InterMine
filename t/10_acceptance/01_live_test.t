@@ -1,21 +1,26 @@
 use strict;
 use warnings;
 
+use Carp qw/cluck/;
+
 use Test::More;
 use Test::Exception;
+
+$SIG{__WARN__} = sub {
+    cluck @_;
+};
 
 my $do_live_tests = $ENV{RELEASE_TESTING};
 
 unless ($do_live_tests) {
     plan( skip_all => "Acceptance tests for release testing only" );
-    #skip "Skipping live tests", 39;
 } else {
-    plan( tests => 39 );
+    plan( tests => 45 );
 }
 
 my $module = 'Webservice::InterMine';
 
-my $url = 'localhost:8080/intermine-test/service';
+my $url = 'http://localhost:8080/intermine-test/service';
 my @view = ('Employee.name', 'Employee.age', 'Employee.fullTime',
     'Employee.address.address', 'Employee.department.name',
     'Employee.department.company.name',
@@ -24,6 +29,18 @@ my @view = ('Employee.name', 'Employee.age', 'Employee.fullTime',
 use_ok($module, ($url));
 
 isa_ok($module->get_service, 'Webservice::InterMine::Service', "The service it makes");
+
+throws_ok(
+    sub {$module->get_service("not.a.good.url")},
+    qr/Can't connect/,
+    "Throws an error at bad urls",
+);
+
+throws_ok(
+    sub {$module->get_service("http://localhost:8080/intermine-test/foo/")},
+    qr/version.*please check the url/,
+    "Throws an error at bad urls",
+);
 
 is($module->get_service->version, 3, "Service version is correct");
 isa_ok($module->get_service->model, 'InterMine::Model', "The model the service makes");
@@ -147,6 +164,7 @@ lives_ok(
 is(@$res, 3, "Gets the right number of records");
 is($res->[1]->age, 20, "with the right fields - Int");
 is($res->[1]->address->address, "Employee Street, AVille", "with the right fields - Str");
+ok($res->[1]->fullTime, "with the right fields - Bool");
 
 my $t;
 lives_ok(
@@ -203,23 +221,46 @@ $exp_res = [
         'age' => 10,
         'class' => 'Employee',
         'name' => 'EmployeeA1',
-        'objectId' => 13000015
     },
     {
         'age' => 20,
         'class' => 'Employee',
         'name' => 'EmployeeA2',
-        'objectId' => 13000020
     },
     {
         'age' => 30,
         'class' => 'Employee',
         'name' => 'EmployeeA3',
-        'objectId' => 13000021
     }
 ];
 $res = $t->results(as => "jsonobjects");
+for my $r (@$res) {
+    delete $r->{objectId}; # Horrifically ugly, but we cannot rely on these to be consistent.
+}
 is_deeply($res, $exp_res, "And for complex formats") or diag(explain $res);
 $res = $t->results(as => "jsonobjects", inflate => 1);
 is($res->[0]->name, "EmployeeA1", "Can access inflated columns ok");
+
+$res = $t->results(as => "jsonrows");
+subtest "and for json rows" => sub {
+    is($res->[0][0]{value}, "EmployeeA1") or diag(explain $res->[0]);
+    is($res->[0][1]{value}, 10) or diag(explain $res->[0]);
+    is($res->[2][0]{value}, "EmployeeA3") or diag(explain $res->[2]);
+};
+
+my $loaded;
+lives_ok {$loaded = $module->load_query(source_file => "t/data/loadable_query.xml")} 
+    "Can load a query";
+
+$exp_res = 
+[
+   [
+     'EmployeeA1',
+     'DepartmentA1'
+   ]
+];
+
+$res = $loaded->results;
+is_deeply($res, $exp_res, "Can get results for queries loaded from xml")
+    or diag(explain $res);
 

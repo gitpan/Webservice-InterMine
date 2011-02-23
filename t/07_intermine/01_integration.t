@@ -10,7 +10,7 @@ $SIG{__DIE__} = sub {
 };
 
 use lib 't/tests'; # for the test role FooBar
-use Test::More tests => 41;
+use Test::More tests => 44;
 use Test::MockObject::Extends;
 use Test::Exception;
 use HTTP::Response;
@@ -263,3 +263,12 @@ SKIP: {
 
     is_deeply($data, $res, "Yamlises, and back, ok");
 }
+
+my $loaded;
+lives_ok {$loaded = $module->load_query(source_file => "t/data/loadable_query.xml")} 
+    "Can load a query";
+
+is_deeply([$loaded->views], ["Employee.name", "Employee.department.name"], "And it can parse it ok");
+
+my $expected_out_xml = q!<saved-query name=""><query view="Employee.name Employee.department.name" name="" model="testmodel" sortOrder="Employee.name asc"><constraint value="20" path="Employee.age" code="A" op="&lt;"/></query></saved-query>!;
+is($loaded->to_xml, $expected_out_xml);

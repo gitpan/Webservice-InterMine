@@ -89,6 +89,7 @@ t/data/bad_templates.xml
 t/data/bad_xml.txt
 t/data/default-template-queries.xml
 t/data/good_xml.txt
+t/data/loadable_query.xml
 t/data/mock_bad_results
 t/data/mock_content_results
 t/data/mock_interrupted_results

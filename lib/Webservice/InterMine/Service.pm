@@ -35,11 +35,11 @@ use Webservice::InterMine::Query;
 use Webservice::InterMine::ResultIterator;
 use Net::HTTP;
 use URI;
-use LWP::UserAgent;
+use LWP;
 use MIME::Base64;
-use MooseX::Types::Moose qw/Str/;
+use MooseX::Types::Moose qw/Str Int/;
 use InterMine::TypeLibrary
-  qw(Uri Model TemplateFactory SavedQueryFactory ListFactory);
+  qw(VersionNumber ServiceRootUri Model TemplateFactory SavedQueryFactory ListFactory);
 
 
 =head2 new( $url, [$user, $pass] )
@@ -48,7 +48,6 @@ A service can be constructed directly by passing a webservice
 url to the new method. To have access to private data (personal
 templates, saved queries and lists) you also need to provide
 login information in the form of a username and password.
-(B<AUTHENTICATION NOT IMPLEMENTED YET>).
 
 =cut
 
@@ -90,7 +89,7 @@ a scheme added if none was provided.
 
 has root => (
     is       => 'ro',
-    isa      => Uri,
+    isa      => ServiceRootUri,
     required => 1,
     coerce   => 1,
     handles  => { host => 'host', },
@@ -128,6 +127,21 @@ sub new_query {
     return apply_roles( $query, $roles );
 }
 
+sub new_from_xml {
+    my $self = shift;
+    my %args = @_;
+
+    my $roles = delete $args{with};
+
+    require Webservice::InterMine::Query::Saved;
+    my $query = Webservice::InterMine::Query::Saved->new(
+        service => $self,
+        model   => $self->model,
+        %args,
+    );
+    return apply_roles( $query, $roles );
+}
+
 =head2 template( $name [$roles] )
 
 This checks to see if there is a template of this name in the
@@ -154,9 +168,9 @@ has _templates => (
 );
 
 sub template {
-    my ( $self, $name, $roles ) = @_;
+    my ( $self, $name, %args ) = @_;
     my $t = $self->get_template($name) or return;
-    return apply_roles( $t, $roles );
+    return apply_roles( $t, $args{with} );
 }
 
 has _saved_queries => (
@@ -198,15 +212,16 @@ sub _build_model {
 =head2 version
 
 Returns the version of the webservice - used for determining
-compatibility with different query formats
+compatibility with different query formats. The version is always
+an integer. An attempt to get the version is made on instantiation, 
+which serves to validate the webservice.
 
 =cut
 
 has version => (
     is       => 'ro',
-    isa      => Str,
+    isa      => VersionNumber,
     required => 1,
-    lazy     => 1,
     default  => sub {
         my $self = shift;
         $self->fetch( $self->root . VERSION_PATH );

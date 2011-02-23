@@ -47,6 +47,17 @@ sub to_xml {
     return $self->to_DOM->toString;
 }
 
+sub to_query_xml {
+    my $self = shift;
+    my $dom = $self->to_DOM;
+    my ($query) = ($dom->getTagName eq "query") 
+            ? $dom 
+            : $dom->getElementsByTagName("query");
+    die "no query element found in DOM"
+        unless $query;
+    return $query->toString;
+}
+
 sub to_DOM {
     my $self = shift;
 

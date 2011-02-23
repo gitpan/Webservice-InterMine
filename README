@@ -42,14 +42,34 @@ DESCRIPTION
     recommended.
 
 METHODS
-  new_query( [$url] )
+  new_query( [\@service_args], [%query_args] )
     returns a new query object for you to fill in with constraints before
     being run to get its results. If you pass a url, it constructs a query
     for the specified webservice.
 
     Please see Webservice::InterMine::Query
 
-  template( $name, [$url] )
+  load_query([\@service_args], source_file|source_string => $source, %opts )
+    Returns a query object based on xml you have previously saved, either as
+    a string or as a file. For a file pass:
+
+      load_query(source_file => $file);
+
+    For a string:
+
+      load_query(source_string => $string);
+
+    If you want a specific service, call it thus:
+
+      load_query(service_args => [$name, $user, $pass], source_string => $string);
+
+    OR:
+
+      load_query([$name, $user, $pass], source_string => $string);
+
+    Please see Webservice::InterMine::Query::Saved
+
+  template( $name, [\@service_args], [%opts] )
     returns the named template (if it exists - if not it returns undef). If
     you pass a url, it returns the named template from the specified
     webservice.

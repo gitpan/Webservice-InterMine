@@ -22,10 +22,13 @@ sub test_paths {
     );
     return @paths;
 }
-sub startup : Test(startup => 2) {
+sub startup : Test(startup => 3) {
     my $test = shift;
     use_ok($test->class);
-    new_ok($test->class, [$test->args]);
+    my $q;
+    lives_ok {$q = $test->class->new($test->args)} "Can make a query"
+        or diag(explain [$test->args]);
+    isa_ok($q, $test->class);
 }
 
 sub setup : Test(setup) {
@@ -36,7 +39,7 @@ sub setup : Test(setup) {
 
 sub teardown : Test(teardown) {
     my $test = shift;
-    delete $test->{object};
+    undef $test->{object};
 }
 
 sub _methods : Test {
@@ -59,16 +62,15 @@ sub _methods : Test {
 
 sub _attributes : Test(7) {
     my $test   = shift;
-    my $object = $test->{object};
     my @readonly_attrs = (qw/
 	sort_order view constraints joins
 	path_descriptions model constraint_factory
     /);
     for (@readonly_attrs) {
-	dies_ok(
-	    sub {$object->$_('Some.other.value')},
-	    "... dies attempting to change $_",
-	);
+        dies_ok(
+            sub {$test->{object}->$_('Some.other.value')},
+            "... dies attempting to change $_",
+        );
     }
 }
 

@@ -23,8 +23,6 @@ to return results. Generally you won't need to interact with it directly, or
 if you do, the methods you will be most interested in are those that return
 objects you can use for running queries.
 
-=head1 METHODS
-
 =cut
 
 package Webservice::InterMine::Service;
@@ -78,6 +76,25 @@ use constant {
     SAVEDQUERY_PATH    => '/savedqueries/xml',
     RELEASE_PATH       => '/version/release',
 };
+
+=head1 CONSTRUCTION
+
+=head2 Webservice::InterMine->get_service($root, $user, $pass)
+
+Typically as service is most conveniently obtained through the
+L<Webservice::InterMine> interface. 
+
+=head2 new($root, $user, $pass)
+
+It can of course be instantiated directly, with a standard call to new.
+
+=head2 don't!
+
+You do not have to obtain a service object: simply call the methods
+on the Webservice::InterMine factory class to obtain new queries,
+fetch templates and load saved queries.
+
+=head1 METHODS
 
 =head2 root | user | pass
 
@@ -346,7 +363,7 @@ You can also look for information at:
 
 =over 4
 
-=item * Webservice::InterMine
+=item * InterMine
 
 L<http://www.intermine.org>
 
@@ -358,7 +375,7 @@ L<http://www.intermine.org/perlapi>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2006 - 2010 FlyMine, all rights reserved.
+Copyright 2006 - 2011 FlyMine, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

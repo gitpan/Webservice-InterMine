@@ -66,6 +66,7 @@ lib/Webservice/InterMine/TemplateFactory.pm
 Makefile.PL
 MANIFEST			This list of files
 README
+scripts/benchmark_inflation.t
 t/00-load.t
 t/01_path/01_validate.t
 t/02_pathfeature/01_pathfeature.t
@@ -98,6 +99,7 @@ t/data/mock_missing_chunk_results
 t/data/mock_results
 t/data/multixml.txt
 t/data/old_style_templates.xml
+t/data/result.json
 t/data/test.properties
 t/data/testmodel_model.xml
 t/manifest.t

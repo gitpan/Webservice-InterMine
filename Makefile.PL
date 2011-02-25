@@ -6,7 +6,7 @@ WriteMakefile
   'NAME' => 'Webservice::InterMine',
   'VERSION_FROM' => 'lib/Webservice/InterMine.pm',
   'PREREQ_PM' => {
-                   'InterMine::Model' => '0.9401',
+                   'InterMine::Model' => '0.9600',
                    'InterMine::TypeLibrary' => '0.9600',
                    'JSON' => 0,
                    'LWP' => '5.8',

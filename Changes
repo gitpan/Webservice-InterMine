@@ -31,3 +31,7 @@ Revision history for Webservice-InterMine
         * Load queries from local xml
         * Support for InterMine xml shortcuts (lt for &lt;, etc.)
         * Tests in support of json rows format
+0.9601  Fri Feb 25 16:26:39 GMT 2011
+        * Bug fixes (including a couple of useless imports)
+        * Queries stringify to their xml representation
+        * More documentation

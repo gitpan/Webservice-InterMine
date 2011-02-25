@@ -1,6 +1,6 @@
 package Webservice::InterMine::Query::Roles::WriteOutAble;
 
-use Moose::Role;
+use MooseX::Role::WithOverloading;
 requires(
     qw/name view sort_order logic joins
       path_descriptions model_name
@@ -8,6 +8,20 @@ requires(
 );
 
 use XML::DOM;
+
+use overload (
+    '""' => 'stringify',
+    fallback => 1,
+);
+
+sub stringify {
+    my $self = shift;
+    if (my $string = eval { $self->to_xml} ) {
+        return $string;
+    } else {
+        return "<query>Invalid</query>";
+    }
+}
 
 sub query_attributes {
     my $self  = shift;
@@ -29,16 +43,16 @@ sub apply_attributes_to_element {
     my $doc = $element->getOwnerDocument;
     my %attrs   = @_;
     while ( my ( $tag, $value ) = each %attrs ) {
-	if (ref $value eq 'ARRAY') {
-	    for (@$value) {
-		my $sub_elem = $doc->createElement($tag);
-		my $text = $doc->createTextNode($_);
-		$sub_elem->appendChild($text);
-		$element->appendChild($sub_elem);
-	    }
-	} else {
-	    $element->setAttribute( $tag => $value );
-	}
+        if (ref $value eq 'ARRAY') {
+            for (@$value) {
+            my $sub_elem = $doc->createElement($tag);
+            my $text = $doc->createTextNode($_);
+            $sub_elem->appendChild($text);
+            $element->appendChild($sub_elem);
+            }
+        } else {
+            $element->setAttribute( $tag => $value );
+        }
     }
 }
 

@@ -1,3 +1,5 @@
+package main;
+
 use strict;
 use warnings;
 
@@ -6,16 +8,16 @@ use Carp qw/cluck/;
 use Test::More;
 use Test::Exception;
 
-$SIG{__WARN__} = sub {
-    cluck @_;
-};
+use MooseX::Types::Moose qw(Bool);
+
+$SIG{__WARN__} = \&Carp::cluck;
 
 my $do_live_tests = $ENV{RELEASE_TESTING};
 
 unless ($do_live_tests) {
     plan( skip_all => "Acceptance tests for release testing only" );
 } else {
-    plan( tests => 45 );
+    plan( tests => 57 );
 }
 
 my $module = 'Webservice::InterMine';
@@ -157,7 +159,26 @@ is($res->[1]->{'Employee.age'}, "20", "with the right fields - Int");
 is($res->[1]->{'Employee.address.address'}, "Employee Street, AVille", "with the right fields - Str");
 
 lives_ok(
-    sub {$res = $q->results(as => 'jsonobjects', inflate => 1)},
+    sub {$res = $q->results(as => 'jsonobjects', json => 'perl')},
+    "Queries for results as a perl data structure",
+);
+
+is(@$res, 3, "Gets the right number of records");
+is($res->[1]{age}, 20, "with the right fields - Int");
+is($res->[1]{address}{address}, "Employee Street, AVille", "with the right fields - Str");
+ok($res->[1]{fullTime}, "with the right fields - Bool");
+
+lives_ok(
+    sub {$res = $q->results(as => 'jsonobjects', json => 'raw')},
+    "Queries for results as a raw text",
+);
+
+my $expected_re = qr/\Q{'rootClass':'Employee','modelName':'testmodel','start':0,'views':["Employee.age","Employee.fullTime","Employee.name","Employee.address.address","Employee.department.name","Employee.department.company.name","Employee.department.manager.name"],'results':[{"address":{"address":"Employee Street, AVille","objectId":3000019,"class":"Address"},"objectId":3000015,"department":{"manager":{"objectId":3000015,"name":"EmployeeA1","class":"Manager"},"objectId":3000014,"name":"DepartmentA1","company":{"objectId":3000000,"name":"CompanyA","class":"Company"},"class":"Department"},"age":10,"name":"EmployeeA1","class":"Manager","fullTime":true},{"address":{"address":"Employee Street, AVille","objectId":3000019,"class":"Address"},"objectId":3000020,"department":{"manager":{"objectId":3000015,"name":"EmployeeA1","class":"Manager"},"objectId":3000014,"name":"DepartmentA1","company":{"objectId":3000000,"name":"CompanyA","class":"Company"},"class":"Department"},"age":20,"name":"EmployeeA2","class":"Employee","fullTime":true},{"address":{"address":"Employee Street, AVille","objectId":3000019,"class":"Address"},"objectId":3000021,"department":{"manager":{"objectId":3000015,"name":"EmployeeA1","class":"Manager"},"objectId":3000014,"name":"DepartmentA1","company":{"objectId":3000000,"name":"CompanyA","class":"Company"},"class":"Department"},"age":30,"name":"EmployeeA3","class":"Employee","fullTime":false}],'executionTime':'\E\d{4}\.\d{2}\.\d{2} \d{2}\:\d{2}\:\:\d{2}\Q'}/;
+
+like($res, $expected_re, "and it has the right content");
+
+lives_ok(
+    sub {$res = $q->results(as => 'jsonobjects', json => 'inflate')},
     "Queries for results as inflated objects",
 );
 
@@ -165,6 +186,16 @@ is(@$res, 3, "Gets the right number of records");
 is($res->[1]->age, 20, "with the right fields - Int");
 is($res->[1]->address->address, "Employee Street, AVille", "with the right fields - Str");
 ok($res->[1]->fullTime, "with the right fields - Bool");
+
+lives_ok(
+    sub {$res = $q->results(as => 'jsonobjects', json => 'instantiate')},
+    "Queries for results as inflated objects",
+);
+
+is(@$res, 3, "Gets the right number of records");
+is($res->[1]->getAge, 20, "with the right fields - Int");
+is($res->[1]->getAddress->getAddress, "Employee Street, AVille", "with the right fields - Str");
+ok($res->[1]->getFullTime, "with the right fields - Bool");
 
 my $t;
 lives_ok(
@@ -219,7 +250,7 @@ is_deeply($t->results,  $exp_res, "And ditto for results") or diag($t->url, expl
 $exp_res = [
     {
         'age' => 10,
-        'class' => 'Employee',
+        'class' => 'Manager',
         'name' => 'EmployeeA1',
     },
     {
@@ -238,14 +269,18 @@ for my $r (@$res) {
     delete $r->{objectId}; # Horrifically ugly, but we cannot rely on these to be consistent.
 }
 is_deeply($res, $exp_res, "And for complex formats") or diag(explain $res);
-$res = $t->results(as => "jsonobjects", inflate => 1);
+$res = $t->results(as => "jsonobjects", json => 'inflate');
 is($res->[0]->name, "EmployeeA1", "Can access inflated columns ok");
 
-$res = $t->results(as => "jsonrows");
 subtest "and for json rows" => sub {
+    $res = $t->results(as => "jsonrows");
     is($res->[0][0]{value}, "EmployeeA1") or diag(explain $res->[0]);
     is($res->[0][1]{value}, 10) or diag(explain $res->[0]);
     is($res->[2][0]{value}, "EmployeeA3") or diag(explain $res->[2]);
+    $res = $t->results(as => "jsonrows", json => "inflate");
+    is($res->[0][0]->value, "EmployeeA1") or diag(explain $res->[0]);
+    is($res->[0][1]->value, 10) or diag(explain $res->[0]);
+    is($res->[2][0]->value, "EmployeeA3") or diag(explain $res->[2]);
 };
 
 my $loaded;

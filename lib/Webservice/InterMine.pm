@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = "0.9600";
+our $VERSION = "0.9601";
 
 =head1 NAME
 
@@ -14,13 +14,13 @@ Webservice::InterMine - modules for interacting with InterMine datawarehouse web
 
     use Webservice::InterMine;
 
-    my $service  = Webservice::InterMine->new_service($url);
+    my $service  = Webservice::InterMine->new_service($url, $user, $pass);
     my $template = $service->template($name);
     my $results  = $template->results_with(valueA => 'x', valueB => 'y');
 
   OR
 
-    use Webservice::InterMine 'www.flymine.org';
+    use Webservice::InterMine 'www.flymine.org', $user, $pass;
 
     my $query    = Webservice::InterMine->new_query;
     $query->add_view(@views);
@@ -52,6 +52,7 @@ If you call C<use Webservice::InterMine $url>, a default service will be set,
 meaning method calls will not require the webservice url. Unless you are
 intending to access multiple services, the latter form is recommended.
 
+
 =head1 METHODS
 
 =cut
@@ -66,12 +67,12 @@ my %user_for;
 
 sub import {
     my $class = shift;
-    my ($url, $user, $pass) = @_;
+    my ( $url, $user, $pass ) = @_;
     if ($url) {
         $service_url = $url;
-        return $class->get_service($url, $user, $pass);
+        return $class->get_service( $url, $user, $pass );
     }
-};
+}
 
 =head2 new_query( [\@service_args], [%query_args] )
 
@@ -85,7 +86,7 @@ Please see L<Webservice::InterMine::Query>
 
 sub new_query {
     my $class = shift;
-    my $service_args = (ref $_[0] ) ? shift : [];
+    my $service_args = ( ref $_[0] ) ? shift : [];
     return $class->get_service(@$service_args)->new_query(@_);
 }
 
@@ -114,7 +115,7 @@ Please see L<Webservice::InterMine::Query::Saved>
 
 sub load_query {
     my $class = shift;
-    my $service_args = (ref $_[0] ) ? shift : [];
+    my $service_args = ( ref $_[0] ) ? shift : [];
     return $class->get_service(@$service_args)->new_from_xml(@_);
 }
 
@@ -128,10 +129,10 @@ Please see L<Webservice::InterMine::Query::Template>
 =cut
 
 sub template {
-    my $class = shift;
-    my $name  = shift;
-    my $service_args = (ref $_[0] eq 'ARRAY') ? shift : [];
-    return $class->get_service(@$service_args)->template($name, @_);
+    my $class        = shift;
+    my $name         = shift;
+    my $service_args = ( ref $_[0] eq 'ARRAY' ) ? shift : [];
+    return $class->get_service(@$service_args)->template( $name, @_ );
 }
 
 =head2 saved_query( $name, [$url] ) B<NOT IMPLEMENTED YET>
@@ -168,18 +169,19 @@ Please see: L<Webservice::InterMine::Service>
 
 sub get_service {
     my $class = shift;
-    my $url   = shift || $service_url;
-    my ($user, $pass) = @_;
+    my $url = shift || $service_url;
+    my ( $user, $pass ) = @_;
     croak "No url provided - either directly or on 'use'"
-        unless $url;
-    if ($services{$url}) {
+      unless $url;
+    if ( $services{$url} ) {
         return $services{$url};
-    } else {
-        if ($user and $pass) {
+    }
+    else {
+        if ( $user and $pass ) {
             $user_for{$url} = $user;
             $pass_for{$url} = $pass;
         }
-        my $service = Webservice::InterMine::Service->new($url, $user, $pass);
+        my $service = Webservice::InterMine::Service->new( $url, $user, $pass );
         $services{$url} = $service;
         return $service;
     }
@@ -219,7 +221,7 @@ You can also look for information at:
 
 =over 4
 
-=item * Webservice::InterMine
+=item * InterMine
 
 L<http://www.intermine.org>
 
@@ -231,7 +233,7 @@ L<http://www.intermine.org/perlapi>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2006 - 2010 FlyMine, all rights reserved.
+Copyright 2006 - 2011 FlyMine, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

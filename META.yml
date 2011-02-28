@@ -21,7 +21,7 @@ name: Webservice-InterMine
 provides:
   Webservice::InterMine:
     file: lib/Webservice/InterMine.pm
-    version: 0.9601
+    version: 0.9602
   Webservice::InterMine::Constraint:
     file: lib/Webservice/InterMine/Constraint.pm
   Webservice::InterMine::Constraint::Binary:
@@ -46,6 +46,10 @@ provides:
     file: lib/Webservice/InterMine/ConstraintFactory.pm
   Webservice::InterMine::Join:
     file: lib/Webservice/InterMine/Join.pm
+  Webservice::InterMine::LogicParser:
+    file: lib/Webservice/InterMine/LogicParser.pm
+  Webservice::InterMine::LogicalOperator:
+    file: lib/Webservice/InterMine/LogicalOperator.pm
   Webservice::InterMine::LogicalSet:
     file: lib/Webservice/InterMine/LogicalSet.pm
   Webservice::InterMine::Path:
@@ -143,4 +147,4 @@ requires:
   perl: v5.8.3
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.9601
+version: 0.9602

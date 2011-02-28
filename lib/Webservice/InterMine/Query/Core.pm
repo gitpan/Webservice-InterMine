@@ -346,6 +346,19 @@ sub check_logic {
     }
 }
 
+use Webservice::InterMine::LogicParser;
+
+has logic_parser => (
+    isa => 'Webservice::InterMine::LogicParser',
+    is => 'ro',
+    lazy_build => 1,
+);
+
+sub _build_logic_parser {
+    my $self = shift;
+    return Webservice::InterMine::LogicParser->new(query => $self);
+}
+
 sub _parse_logic {
 
    # eg: Organism_interologues: which has the fiercesome:

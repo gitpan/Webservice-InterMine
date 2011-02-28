@@ -218,7 +218,7 @@ sub _parse {
         else {
             $current_field = $current_class->get_field_by_name($bit);
             if ( !defined $current_field ) {
-                if ( my $type = $type_hashref->{ $current_class->name } ) {
+                if ( my $type = $type_hashref->{ $current_class } ) {
                     my $type_class = $model->get_classdescriptor_by_name($type);
                     $current_field = $type_class->get_field_by_name($bit);
                 }

@@ -27,15 +27,15 @@ my $class = $model->get_classdescriptor_by_name('Department'); #Company -> Compa
 my $ref   = $class->get_field_by_name('employees');              #address -> Address
 my $att   = $ref->referenced_classdescriptor->get_field_by_name('name');
 
-is($class_of->($class)->name, 'Department', 'Gets class of class');
-is($class_of->($ref)->name,   'Employee',   'Gets class of reference');
-is($class_of->($att),          undef,       'Returns undef for attributes');
+is($class_of->($class), 'Department', 'Gets class of class');
+is($class_of->($ref),   'Employee',   'Gets class of reference');
+is($class_of->($att),   undef,       'Returns undef for attributes');
 
 
-is($next_class->($class, $model)->name, 'Department', 'Next class of a cd is the cd');
-is($next_class->($ref, $model)->name, 'Employee', 'Next class of a ref is the ref cd');
+is($next_class->($class, $model), 'Department', 'Next class of a cd is the cd');
+is($next_class->($ref, $model), 'Employee', 'Next class of a ref is the ref cd');
 is($next_class->($att, $model), undef, 'Next class of an att is undef');
-is($next_class->($ref, $model, 'Manager')->name, 'Manager', 
+is($next_class->($ref, $model, 'Manager'), 'Manager', 
    'Next class of a subclassed path is the subclass');
 
 throws_ok( sub {$next_class->($ref, $model, 'Foo')},
@@ -46,7 +46,7 @@ my @parts;
 lives_ok(sub {@parts = $parse->($model, $good_path_string)}, 
     'Can parse a good path');
 is(scalar(@parts), 3, 'Gets the number of parts right');
-is($parts[0]->name(), 'Department', 'class name of start of path');
+like($parts[0]->name(), qr/Department$/, 'class name of start of path');
 ok($parts[0]->isa('InterMine::Model::ClassDescriptor'), 
     'start of path is a class descriptor');
 is($parts[1]->name(), 'employees', 'reference name of middle of path');

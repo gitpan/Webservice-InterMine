@@ -35,3 +35,6 @@ Revision history for Webservice-InterMine
         * Bug fixes (including a couple of useless imports)
         * Queries stringify to their xml representation
         * More documentation
+0.9602  Mon Feb 28 19:25:19 GMT 2011
+        * Model bug fix required changes to some tests, and 
+          one or two places in the path logic

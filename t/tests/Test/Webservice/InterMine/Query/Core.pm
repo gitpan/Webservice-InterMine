@@ -146,7 +146,7 @@ sub add_constraint : Test(20) {
 		$test->extra_constraint_args,
 	    );
 	},
-	"makes a multi constraint without dying",
+	"makes a multi constraint on a subclassed path without dying",
     ) or diag explain $obj->type_dict;
     isa_ok($cons[-1], 'Webservice::InterMine::Constraint::Multi', ".. and it");
     lives_ok(

@@ -38,3 +38,5 @@ Revision history for Webservice-InterMine
 0.9602  Mon Feb 28 19:25:19 GMT 2011
         * Model bug fix required changes to some tests, and 
           one or two places in the path logic
+0.9603: Tue Mar  1 15:28:18 GMT 2011
+        * Now using the TestModel instance - big effect on test run speed

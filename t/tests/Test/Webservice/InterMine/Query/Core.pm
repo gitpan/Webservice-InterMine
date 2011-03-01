@@ -6,12 +6,12 @@ use base qw(Test::Class);
 use List::MoreUtils qw(uniq);
 use Test::More;
 use Test::Exception;
-use InterMine::Model;
+use InterMine::Model::TestModel;
 use Webservice::InterMine::ConstraintFactory;
 sub class {'Webservice::InterMine::Query::Core'}
 sub args {my $test = shift; return (model => $test->model);}
 sub service_url {'test.url.string'}
-sub model {return InterMine::Model->new(file => 't/data/testmodel_model.xml');}
+sub model {return InterMine::Model::TestModel->instance};
 sub logic_string1 {'A and B and C'}
 sub logic_string2 {'(A or B) and C'}
 sub extra_constraint_args {}

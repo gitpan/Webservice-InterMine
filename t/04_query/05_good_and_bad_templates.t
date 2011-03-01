@@ -7,7 +7,7 @@ use Test::More;
 use Test::Exception;
 use Test::MockObject;
 use List::MoreUtils qw/mesh/;
-use InterMine::Model;
+use InterMine::Model::TestModel;
 use XML::Rules;
 
 my $module = 'Webservice::InterMine::Query::Template';
@@ -122,8 +122,7 @@ my @baddies_errors = (
 );
 my %exp_err_for = mesh( @baddies_names, @baddies_errors );
 
-my $modelf = 't/data/testmodel_model.xml';
-my $model = InterMine::Model->new( file => $modelf );
+my $model = InterMine::Model::TestModel->instance;
 
 my $service = Test::MockObject->new;
 $service->set_isa('Webservice::InterMine::Service');

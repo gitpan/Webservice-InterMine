@@ -21,7 +21,7 @@ name: Webservice-InterMine
 provides:
   Webservice::InterMine:
     file: lib/Webservice/InterMine.pm
-    version: 0.9602
+    version: 0.9603
   Webservice::InterMine::Constraint:
     file: lib/Webservice/InterMine/Constraint.pm
   Webservice::InterMine::Constraint::Binary:
@@ -129,7 +129,7 @@ recommends:
   Spreadsheet::WriteExcel: 0
   YAML::Syck: 1.07
 requires:
-  InterMine::Model: 0.9600
+  InterMine::Model: 0.9605
   InterMine::TypeLibrary: 0.9600
   JSON: 0
   LWP: 5.8
@@ -147,4 +147,4 @@ requires:
   perl: v5.8.3
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.9602
+version: 0.9603

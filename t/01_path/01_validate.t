@@ -3,9 +3,9 @@
 use strict;
 use warnings;
 
-use Test::More tests => 38;
+use Test::More tests => 41;
 use Test::Exception;
-use InterMine::Model;
+use InterMine::Model::TestModel;
 use Webservice::InterMine::Path qw(:validate);
 
 # internal functions we would like access to for testing
@@ -14,7 +14,7 @@ my $class_of   = Webservice::InterMine::Path->can('class_of');
 my $next_class = Webservice::InterMine::Path->can('next_class');
 my $last_bit   = Webservice::InterMine::Path->can('last_bit');
 
-my $model = new InterMine::Model(file => 't/data/testmodel_model.xml');
+my $model = InterMine::Model::TestModel->instance;
 
 my $good_path_string = 'Department.employees.name';
 my $bad_class_string = 'Foo.bar.baz';
@@ -103,11 +103,19 @@ like(end_is_class($model, $good_path_string),
 dies_ok( sub {$last_bit->($good_path_string, $model)}, 
 	 'end_is_class dies on bad arguments');
 
-is(b_is_subclass_of_a($model, 'Employee', 'Manager'), undef, 
+is(b_is_subclass_of_a($model, 'Department.employees', 'Manager'), undef, 
    'No errors if b is a subclass of a');
 like(b_is_subclass_of_a($model, 'Manager', 'Employee'),
       qr/Employee.*not a subclass of Manager/,
       'Errors if b is not a subclass of a');
 is(b_is_subclass_of_a($model, 'Foo', 'Bar'), undef, 
+   'Bad paths do not throw an error (they get validated by validate_path)');
+
+is(a_is_subclass_of_b($model, 'Department.manager', 'Employee'), undef, 
+   'No errors if b is a subclass of a');
+like(a_is_subclass_of_b($model, 'Employee', 'Manager'),
+      qr/Employee.*not a subclass of Manager/,
+      'Errors if b is not a subclass of a');
+is(a_is_subclass_of_b($model, 'Foo', 'Bar'), undef, 
    'Bad paths do not throw an error (they get validated by validate_path)');
 

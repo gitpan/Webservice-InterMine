@@ -279,7 +279,8 @@ sub add_pathdescription {
     return $self;
 }
 has logic => (
-    is      => 'rw',
+    writer  => 'set_logic',
+    reader  => 'logic',
     isa     => LogicOrStr,
     lazy    => 1,
     clearer => 'clear_logic',
@@ -342,7 +343,7 @@ sub check_logic {
     my ( $self, $value ) = @_;
     unless ( blessed $value) {
         my $new_value = _parse_logic( $value, $self->coded_constraints );
-        $self->logic($new_value);
+        $self->set_logic($new_value);
     }
 }
 

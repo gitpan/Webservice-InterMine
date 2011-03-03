@@ -205,27 +205,27 @@ sub logic : Test(7) {
 	code => 'C',
     );
     is($obj->logic->code, $test->logic_string1, "Constructs default logic correctly");
-    $obj->logic("A and (B or C)");
+    $obj->set_logic("A and (B or C)");
     is($obj->logic->code, 'A and (B or C)', "Constructs logic correctly from a string");
-    $obj->logic(($a | $b) & $c);
+    $obj->set_logic(($a | $b) & $c);
     is($obj->logic->code, $test->logic_string2, "Constructs logic correctly from objects");
     throws_ok(
-	sub {$obj->logic("A and Z")},
+	sub {$obj->set_logic("A and Z")},
 	qr/No constraint with code Z/,
 	"catches wrong logic codes",
     );
     throws_ok(
-	sub {$obj->logic("A foo B")},
+	sub {$obj->set_logic("A foo B")},
 	qr/unexpected element in logic string: foo/,
 	"catches bad syntax",
     );
     throws_ok(
-	sub {$obj->logic($a + $b)},
+	sub {$obj->set_logic($a + $b)},
 	qr/unexpected element in logic string/,
 	"catches bad object syntax",
     );
     throws_ok(
-	sub {$obj->logic($a | $test)},
+	sub {$obj->set_logic($a | $test)},
 	qr/does not pass the type constraint/,
 	"catches bad objects",
     );

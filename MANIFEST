@@ -1,3 +1,5 @@
+bin/run-im-query
+bin/run-im-template
 Build.PL
 Changes
 ignore.txt
@@ -85,6 +87,7 @@ t/05_template/01_factory.t
 t/06_service/01_service.t
 t/06_service/02_result_iterator.t
 t/06_service/03_result_objects.t
+t/06_service/04_serviced_queries.t
 t/07_intermine/01_integration.t
 t/10_acceptance/01_live_test.t
 t/data/bad_templates.xml
@@ -101,9 +104,8 @@ t/data/mock_results
 t/data/multixml.txt
 t/data/old_style_templates.xml
 t/data/result.json
-t/data/test.properties
-t/data/testmodel_model.xml
 t/manifest.t
+t/moose-hygiene.t
 t/pod-coverage.t
 t/pod.t
 t/tests/Test/Webservice/InterMine/Constraint.pm

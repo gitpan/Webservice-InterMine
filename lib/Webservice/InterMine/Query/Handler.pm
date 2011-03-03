@@ -242,7 +242,7 @@ sub end_document {
         $self->query->clean_out_SCCs;
         $self->query->resume_validation;
     }
-    $self->query->logic( $self->logic_string ) if $self->logic_string;
+    $self->query->set_logic( $self->logic_string ) if $self->logic_string;
     $self->query->validate unless $self->query->is_dubious;
 }
 

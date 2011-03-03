@@ -14,6 +14,7 @@ use Test::MockObject::Extends;
 use Test::Exception;
 use HTTP::Response;
 use IO::File;
+use InterMine::Model::TestModel;
 
 sub slurp {
     my $file = shift;
@@ -24,7 +25,7 @@ my $module = 'Webservice::InterMine';
 
 my $results_file = 't/data/mock_content_results';
 
-my $model     = slurp('t/data/testmodel_model.xml');
+my $model     = InterMine::Model::TestModel->instance->to_xml;
 my $results   = slurp($results_file);
 my $templates = slurp('t/data/default-template-queries.xml');
 

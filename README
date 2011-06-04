@@ -11,7 +11,7 @@ SYNOPSIS
 
       OR
 
-        use Webservice::InterMine 'www.flymine.org', $user, $pass;
+        use Webservice::InterMine 'flymine', 'some-username', 'some-password';
 
         my $query    = Webservice::InterMine->new_query;
         $query->add_view(@views);
@@ -31,15 +31,37 @@ DESCRIPTION
     This module allows you to interact with one or more webservices by
     providing a url to an InterMine implementation.
 
-  Usage
-    You can call "use Webservice::InterMine" without any parameters, which
-    simply means you need to either specify the webservice url on every
-    call, or call the methods on a service directly.
+INSTALLATION AND DEPENDENCIES
+    This package can be installed using the following commands
+    (Module::Build >= 0.36 is required):
 
-    If you call "use Webservice::InterMine $url", a default service will be
-    set, meaning method calls will not require the webservice url. Unless
-    you are intending to access multiple services, the latter form is
-    recommended.
+      perl Build.PL
+      ./Build test
+      sudo ./Build install
+
+    If any runtime dependencies are missing, you can use the following
+    command to install them:
+
+      sudo ./Build installdeps
+
+  IMPORT STATEMENTS
+    In the example above the modules are imported with the following
+    statements:
+
+        use Webservice::InterMine;
+
+    and
+
+        use Webservice::InterMine 'flymine', 'some-username', 'some-password';
+
+    Calling "use Webservice::InterMine" without any parameters simply means
+    you need to either specify the webservice url on every call, or call the
+    methods on a service directly.
+
+    If you call "use Webservice::InterMine $mine, [$user, $pass]", a default
+    service will be set, meaning method calls will not require the
+    webservice url. Unless you are intending to access multiple services,
+    this form is recommended.
 
 METHODS
   new_query( [from => \@service_args], [%query_args] )
@@ -65,8 +87,7 @@ METHODS
   new_list( %list_args, [from => \@service_args] )
     Creates a new list with the content specified by the list arguments. The
     "content" key-word parameter will always be required. For a full
-    specification of creating lists, see:
-    Webservice::InterMine::ListFactory.
+    specification of creating lists, see: Webservice::InterMine::Service.
 
     Parameters:
 

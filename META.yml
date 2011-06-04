@@ -22,7 +22,7 @@ name: Webservice-InterMine
 provides:
   Webservice::InterMine:
     file: lib/Webservice/InterMine.pm
-    version: 0.9700
+    version: 0.9701
   Webservice::InterMine::Constraint:
     file: lib/Webservice/InterMine/Constraint.pm
   Webservice::InterMine::Constraint::Binary:
@@ -192,10 +192,11 @@ requires:
   Pod::Usage: 0
   Scalar::Util: 0
   Set::Object: 0
+  Time::HiRes: 0
   URI: 1.37
   XML::DOM: 0
   XML::Parser::PerlSAX: 0.08
   perl: v5.8.3
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.9700
+version: 0.9701

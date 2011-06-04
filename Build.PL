@@ -8,6 +8,7 @@ my $build = Module::Build->new(
     create_readme        => 1,
     recursive_test_files => 1,
     create_makefile_pl   => 'traditional',
+    configure_requires   => { 'Module::Build' => '0.36' },
     requires             => {
         'DateTime'                      => 0,
         'DateTime::Format::ISO8601'     => 0,
@@ -33,6 +34,7 @@ my $build = Module::Build->new(
         'XML::DOM'                      => 0,
         'AppConfig'                     => 0,
         'Pod::Usage'                    => 0,
+        'Time::HiRes'                   => 0,
     },
     recommends => {
         'YAML::Syck'              => 1.07,

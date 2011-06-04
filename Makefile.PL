@@ -33,6 +33,7 @@ WriteMakefile
                    'Test::MockObject::Extends' => 0,
                    'Test::More' => '0.9',
                    'Test::XML' => 0,
+                   'Time::HiRes' => 0,
                    'URI' => '1.37',
                    'XML::DOM' => 0,
                    'XML::Parser::PerlSAX' => '0.08',

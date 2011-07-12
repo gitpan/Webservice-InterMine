@@ -25,7 +25,7 @@ my $id_file = 't/data/test-identifiers.list';
 use_ok($module);
 
 $service = Webservice::InterMine->get_service(
-    'squirrel.flymine.org/intermine-test', 'intermine-test-user', 'intermine-test-user-password');
+    'squirrel.flymine.org/intermine-test', 'a1v3V1X0f3hdmaybq0l6b7Z4eVG');
 
 $initial_list_count = $service->list_count;
 

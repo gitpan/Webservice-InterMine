@@ -17,7 +17,7 @@ my $do_live_tests = $ENV{RELEASE_TESTING};
 unless ($do_live_tests) {
     plan( skip_all => "Acceptance tests for release testing only" );
 } else {
-    plan( tests => 69 );
+    plan( tests => 72 );
 }
 
 my $module = 'Webservice::InterMine';
@@ -51,7 +51,7 @@ throws_ok(
     "Throws an error at bad urls",
 );
 
-is($module->get_service->version, 4, "Service version is correct");
+is($module->get_service->version, 6, "Service version is correct");
 isa_ok($module->get_service->model, 'InterMine::Model', "The model the service makes");
 my $q;
 lives_ok(sub {$q = $module->new_query}, "Makes a new query ok");
@@ -227,7 +227,7 @@ PRINTING: {
     open(my $fh, '>', \$buffer) or die "Horribly, $!";
     $q->print_results(to => $fh, columnheaders => 1);
     close $fh or die "$!";
-    my $expected = qq|Employee > name\tEmployee > age\tEmployee > fullTime\tEmployee > address > address\tEmployee > department > name\tEmployee > department > company > name\tEmployee > department > manager > name
+    my $expected = qq|Employee > Name\tEmployee > Years Alive\tEmployee > Works Full Time\tEmployee > Address > Address\tEmployee > Department > Name\tEmployee > Department > Company > Name\tEmployee > Department > Manager > Name
 EmployeeA1\t10\ttrue\tEmployee Street, AVille\tDepartmentA1\tCompanyA\tEmployeeA1
 EmployeeA2\t20\ttrue\tEmployee Street, AVille\tDepartmentA1\tCompanyA\tEmployeeA1
 EmployeeA3\t30\tfalse\tEmployee Street, AVille\tDepartmentA1\tCompanyA\tEmployeeA1
@@ -360,7 +360,7 @@ PRINTING_TEMPLATES: {
     open(my $fh, '>', \$buffer) or die "Horribly, $!";
     $t->print_results_with(valueA => 'companyB', to => $fh, columnheaders => 1);
     close $fh or die "$!";
-    my $expected = qq|Employee.>.name\tEmployee.>.age
+    my $expected = qq|Employee.>.Name\tEmployee.>.Years Alive
 EmployeeB1\t40
 EmployeeB2\t50
 EmployeeB3\t60
@@ -380,6 +380,24 @@ $exp_res = [ ['EmployeeA1','DepartmentA1'] ];
 $res = $loaded->results;
 is_deeply($res, $exp_res, "Can get results for queries loaded from xml")
     or diag(explain $res);
+
+AUTHENTICATION: {
+    require Webservice::InterMine::Service;
+    my $authenticated_service = Webservice::InterMine::Service->new($url, "intermine-test-user", "intermine-test-user-password");
+
+    my $template = $authenticated_service->template("private-template-1");
+
+    is($template->get_count, 48, "Can read a private template");
+
+    my $token_service = Webservice::InterMine::Service->new($url, 'a1v3V1X0f3hdmaybq0l6b7Z4eVG');
+
+    is($token_service->token, 'a1v3V1X0f3hdmaybq0l6b7Z4eVG', "Interprets arguments correctly as token");
+
+    my $template2 = $authenticated_service->template("private-template-1");
+
+    is($template2->get_count, 48, "Can read a private template");
+}
+
 
 PARSING_EMPTY_RESULTS: {
     my $q = $module->new_query(class => 'Manager');

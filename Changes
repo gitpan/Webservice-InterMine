@@ -103,5 +103,7 @@ Revision history for Webservice-InterMine
         Added all, first and one to runnable queries.
         Add Query::path method for making Path objects
         Allowed loop constraints to be built with Path objects.
+0.9802: Tue Jul 26 16:31:59 BST 2011
+        Aligned handling of parsed sortorders with webserver code (tolerates broken sort-orders)
         
 

@@ -110,6 +110,8 @@ Revision history for Webservice-InterMine
         for memory reasons over MooseX::InsideOut, which leaks.
         * search and where imply select("*") if the view is empty
         * Made results default to ResultRows
+0.9805: Tue Aug  2 22:12:57 BST 2011
+        * Switched to JSON::XS for result parsing for performance reasons.
 
         
 

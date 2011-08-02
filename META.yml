@@ -23,7 +23,7 @@ name: Webservice-InterMine
 provides:
   Webservice::InterMine:
     file: lib/Webservice/InterMine.pm
-    version: 0.9804
+    version: 0.9805
   Webservice::InterMine::Constraint:
     file: lib/Webservice/InterMine/Constraint.pm
     version: 0
@@ -261,6 +261,7 @@ requires:
   IO::Handle: 0
   InterMine::Model: 0.9700
   JSON: 0
+  JSON::XS: 0
   LWP: 5.8
   List::MoreUtils: 0.22
   MIME::Base64: 0
@@ -279,4 +280,4 @@ requires:
   perl: v5.8.3
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.9804
+version: 0.9805

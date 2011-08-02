@@ -18,6 +18,7 @@ my $build = Module::Build->new(
         'IO::Handle'                    => 0,
         'IO::File'                      => 0,
         'JSON'                          => 0,
+        'JSON::XS'                      => 0,
         'List::MoreUtils'               => 0.22,
         'LWP'                           => 5.8,
         'HTTP::Request::Common'         => 0,

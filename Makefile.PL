@@ -16,6 +16,7 @@ WriteMakefile
                    'IO::Handle' => 0,
                    'InterMine::Model' => '0.9700',
                    'JSON' => 0,
+                   'JSON::XS' => 0,
                    'LWP' => '5.8',
                    'List::MoreUtils' => '0.22',
                    'MIME::Base64' => 0,

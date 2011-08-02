@@ -112,6 +112,8 @@ Revision history for Webservice-InterMine
         * Made results default to ResultRows
 0.9805: Tue Aug  2 22:12:57 BST 2011
         * Switched to JSON::XS for result parsing for performance reasons.
+0.9806: Tue Aug  2 23:41:12 BST 2011
+        * Made select and add_to_select conform accross clients - select now replaces the view
 
         
 

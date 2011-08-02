@@ -262,18 +262,22 @@ Clear the current view
 
 Get the number of output columns
 
-=head2 add_view
-
-alias for add_views
-
-=head2 select
-
-alias for add_view
-
 =head2 add_views(@views)
 
 Add the given views to the view list, first preprending
 the query's root, and checking for validity.
+
+=head2 add_view
+
+alias for add_views
+
+=head2 add_to_select(@columns)
+
+Alias for add_views
+
+=head2 select(@columns)
+
+Clear the current view and replace it with the given columns.
 
 =cut
 
@@ -281,8 +285,14 @@ sub add_view {
     goto &add_views;
 }
 
-sub select {
+sub add_to_select {
     goto &add_views;
+}
+
+sub select {
+    my $self = shift;
+    $self->clear_view;
+    $self->add_views(@_);
 }
 
 sub add_views {

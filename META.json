@@ -39,6 +39,7 @@
          },
          "requires" : {
             "AppConfig" : 0,
+            "Class::InsideOut" : "1.04",
             "DateTime" : 0,
             "DateTime::Format::ISO8601" : 0,
             "HTTP::Request::Common" : 0,
@@ -69,7 +70,7 @@
    "provides" : {
       "Webservice::InterMine" : {
          "file" : "lib/Webservice/InterMine.pm",
-         "version" : "0.9803"
+         "version" : "0.9804"
       },
       "Webservice::InterMine::Constraint" : {
          "file" : "lib/Webservice/InterMine/Constraint.pm",
@@ -165,6 +166,10 @@
       },
       "Webservice::InterMine::Parser::JSON::HashRefs" : {
          "file" : "lib/Webservice/InterMine/Parser/JSON/HashRefs.pm",
+         "version" : 0
+      },
+      "Webservice::InterMine::Parser::JSON::ResultRows" : {
+         "file" : "lib/Webservice/InterMine/Parser/JSON/ResultRows.pm",
          "version" : 0
       },
       "Webservice::InterMine::Path" : {
@@ -291,6 +296,10 @@
          "file" : "lib/Webservice/InterMine/ResultObject.pm",
          "version" : 0
       },
+      "Webservice::InterMine::ResultRow" : {
+         "file" : "lib/Webservice/InterMine/ResultRow.pm",
+         "version" : 0
+      },
       "Webservice::InterMine::Role::Described" : {
          "file" : "lib/Webservice/InterMine/Role/Described.pm",
          "version" : 0
@@ -366,5 +375,5 @@
          "http://dev.perl.org/licenses/"
       ]
    },
-   "version" : "0.9803"
+   "version" : "0.9804"
 }

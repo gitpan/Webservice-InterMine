@@ -797,6 +797,9 @@ sub search {
     my $self = shift;
     my $constraints = shift;
     my $results_args = shift || {as => 'jsonobjects', json => 'instantiate'};
+    if ($self->view_is_empty and $self->has_root_path) {
+        $self->select("*");
+    }
     if (ref $constraints eq 'HASH') {
         while (my ($path, $con) = each(%$constraints)) {
             $self->add_constraint($path, $con);

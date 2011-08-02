@@ -23,7 +23,7 @@ name: Webservice-InterMine
 provides:
   Webservice::InterMine:
     file: lib/Webservice/InterMine.pm
-    version: 0.9803
+    version: 0.9804
   Webservice::InterMine::Constraint:
     file: lib/Webservice/InterMine/Constraint.pm
     version: 0
@@ -95,6 +95,9 @@ provides:
     version: 0
   Webservice::InterMine::Parser::JSON::HashRefs:
     file: lib/Webservice/InterMine/Parser/JSON/HashRefs.pm
+    version: 0
+  Webservice::InterMine::Parser::JSON::ResultRows:
+    file: lib/Webservice/InterMine/Parser/JSON/ResultRows.pm
     version: 0
   Webservice::InterMine::Path:
     file: lib/Webservice/InterMine/Path.pm
@@ -189,6 +192,9 @@ provides:
   Webservice::InterMine::ResultObject:
     file: lib/Webservice/InterMine/ResultObject.pm
     version: 0
+  Webservice::InterMine::ResultRow:
+    file: lib/Webservice/InterMine/ResultRow.pm
+    version: 0
   Webservice::InterMine::Role::Described:
     file: lib/Webservice/InterMine/Role/Described.pm
     version: 0
@@ -246,6 +252,7 @@ recommends:
   YAML::Syck: 1.07
 requires:
   AppConfig: 0
+  Class::InsideOut: 1.04
   DateTime: 0
   DateTime::Format::ISO8601: 0
   HTTP::Request::Common: 0
@@ -272,4 +279,4 @@ requires:
   perl: v5.8.3
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.9803
+version: 0.9804

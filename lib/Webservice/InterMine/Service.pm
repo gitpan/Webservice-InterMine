@@ -716,10 +716,13 @@ sub create_row_parser {
     if ($row_format eq any(@SIMPLE_FORMATS)) {
         require Webservice::InterMine::Parser::FlatFile;
         return Webservice::InterMine::Parser::FlatFile->new();
-    } elsif ($row_format eq "arrayrefs") {
+    } elsif ($row_format eq 'rr') {
+        require Webservice::InterMine::Parser::JSON::ResultRows;
+        return Webservice::InterMine::Parser::JSON::ResultRows->new(view => $view_list);
+    } elsif ($row_format eq 'arrayrefs') {
         require Webservice::InterMine::Parser::JSON::ArrayRefs;
         return Webservice::InterMine::Parser::JSON::ArrayRefs->new();
-    } elsif ($row_format eq "hashrefs") {
+    } elsif ($row_format eq 'hashrefs') {
         require Webservice::InterMine::Parser::JSON::HashRefs;
         return Webservice::InterMine::Parser::JSON::HashRefs->new(view => $view_list);
     } elsif ($row_format eq any(@JSON_FORMATS)) {

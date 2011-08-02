@@ -7,6 +7,7 @@ WriteMakefile
   'VERSION_FROM' => 'lib/Webservice/InterMine.pm',
   'PREREQ_PM' => {
                    'AppConfig' => 0,
+                   'Class::InsideOut' => '1.04',
                    'DateTime' => 0,
                    'DateTime::Format::ISO8601' => 0,
                    'HTTP::Request::Common' => 0,

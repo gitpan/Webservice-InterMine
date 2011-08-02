@@ -17,7 +17,7 @@ my $do_live_tests = $ENV{RELEASE_TESTING};
 unless ($do_live_tests) {
     plan( skip_all => "Acceptance tests for release testing only" );
 } else {
-    plan( tests => 73 );
+    plan( tests => 84 );
 }
 
 my $module = 'Webservice::InterMine';
@@ -145,7 +145,7 @@ lives_ok(
 
 is(ref $res, 'ARRAY', "And it is an arrayref");
 
-is(ref $res->[0], 'ARRAY', "An array of arrays in fact");
+is(ref $res->[0], 'Webservice::InterMine::ResultRow', "An array of result-rows in fact");
 
 is($res->[1][1], "20", "With the right fields - Int") or diag(explain $res);;
 is($res->[1][3], "Employee Street, AVille", "With the right fields - Str") or diag(explain $res);;
@@ -160,7 +160,7 @@ my $res_slice = [
   'EmployeeA1'
 ];
 
-is_deeply($q->results(size => 1, start => 1), $res_slice, "Can handle start and size");
+is_deeply($q->results(size => 1, start => 1)->[0]->to_aref, $res_slice, "Can handle start and size");
 
 $q->add_constraint(
     path  => 'Employee.age',
@@ -282,8 +282,11 @@ my $exp_res = [
     ['EmployeeB3', '60']
 ];
 
-is_deeply($res, $exp_res, "With the right fields")
-    or diag($t->url, explain $res), diag $t->show_constraints;
+for my $row (0, 1, 2) {
+    for my $col (0, 1) {
+        is($res->[$col][$row], $exp_res->[$col][$row]);
+    }
+}
 
 $exp_res = [
     ['EmployeeA1','10'],
@@ -293,11 +296,15 @@ $exp_res = [
 
 $res = $t->results;
 
-is_deeply($res,  $exp_res, "And ditto for results") or diag($t->url, explain $res);
+for my $row (0, 1, 2) {
+    for my $col (0, 1) {
+        is($res->[$col][$row], $exp_res->[$col][$row]);
+    }
+}
 
 $exp_res = ['EmployeeA2',20];
 
-is_deeply($t->results(size => 1, start => 1), $exp_res, "And it handles start and size");
+is_deeply($t->results(size => 1, start => 1)->[0]->to_aref, $exp_res, "And it handles start and size");
 
 $exp_res = [
     {
@@ -377,8 +384,8 @@ lives_ok {$loaded = $module->load_query(source_file => "t/data/loadable_query.xm
 $exp_res = [ ['EmployeeA1','DepartmentA1'] ];
 
 $res = $loaded->results;
-is_deeply($res, $exp_res, "Can get results for queries loaded from xml")
-    or diag(explain $res);
+is($res->[0][0], $exp_res->[0][0], "Can get results for queries loaded from xml");
+is($res->[0][1], $exp_res->[0][1], "Can get results for queries loaded from xml");
 
 AUTHENTICATION: {
     require Webservice::InterMine::Service;

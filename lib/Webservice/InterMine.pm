@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = "0.9806";
+our $VERSION = "0.9807";
 
 =head1 NAME
 
@@ -134,11 +134,35 @@ You can use them in queries, and display their contents, as well as perforing
 set-logic operations on them. When you are done, you can view the lists in the webservice, 
 where you can use the analysis widgets to assess the data you have processed.
 
+=head1 IMPORTS
+
+The following functions are imported into the callers namespace. This can be prevented by "require"-ing 
+the module instead.
+
+=over
+
+=item * get_service
+
+=item * new_query
+
+=item * resultset
+
+=item * template
+ 
+=item * get_list
+
+=item * new_list
+
+=item * load_query
+
+=back
+
 =head1 METHODS
 
 =cut
 
 use Webservice::InterMine::Service;
+use base "Exporter";
 
 our $CLEAN_UP = 1;
 
@@ -150,14 +174,16 @@ my %services;
 my %pass_for;
 my %user_for;
 
+our @EXPORT_OK = ("get_service", "new_query", "template", "get_list", "new_list", "resultset");
+
 sub import {
     my $class = shift;
     my @args = @_;
     if (@args) {
         my $service = $class->get_service(@args);
         $service_url = $service->root;
-        return $service;
     }
+    Webservice::InterMine->export_to_level(1, $class, @EXPORT_OK);
 }
 
 =head2 new_query( [from => \@service_args], [%query_args] )
@@ -188,8 +214,17 @@ Please see L<Webservice::InterMine::Query>, L<Webservice::InterMine::Service>.
 =cut
 
 sub new_query {
-    my $class = shift;
+    my $class = ($_[0] and $_[0] eq "Webservice::InterMine") ? shift : "Webservice::InterMine";
     my %args = @_;
+    my $service_args = delete($args{from}) || [];
+    return $class->get_service(@$service_args)->new_query(%args);
+}
+
+sub resultset {
+    my $class = ($_[0] and $_[0] eq "Webservice::InterMine") ? shift : "Webservice::InterMine";
+    my $root = shift;
+    my %args = @_;
+    $args{class} = $root;
     my $service_args = delete($args{from}) || [];
     return $class->get_service(@$service_args)->new_query(%args);
 }
@@ -221,7 +256,7 @@ factory method in that class.
 =cut
 
 sub new_list {
-    my $class = shift;
+    my $class = ($_[0] and $_[0] eq "Webservice::InterMine") ? shift : "Webservice::InterMine";
     my %args = @_;
     my $service_args = delete($args{from}) || [];
     return $class->get_service(@$service_args)->new_list(%args);
@@ -235,7 +270,7 @@ details are supplied.
 =cut
 
 sub get_list {
-    my $class = shift;
+    my $class = ($_[0] and $_[0] eq "Webservice::InterMine") ? shift : "Webservice::InterMine";
     my $list_name = shift;
     my %args = @_;
     my $service_args = delete($args{from}) || [];
@@ -266,7 +301,7 @@ Please see L<Webservice::InterMine::Query::Saved>
 =cut
 
 sub load_query {
-    my $class = shift;
+    my $class = ($_[0] and $_[0] eq "Webservice::InterMine") ? shift : "Webservice::InterMine";
     my %args = @_;
     my $service_args = delete($args{from}) || [];
     return $class->get_service(@$service_args)->new_from_xml(%args);
@@ -282,7 +317,7 @@ Please see L<Webservice::InterMine::Query::Template>
 =cut
 
 sub template {
-    my $class        = shift;
+    my $class = ($_[0] and $_[0] eq "Webservice::InterMine") ? shift : "Webservice::InterMine";
     my $name         = shift;
     my %args         = @_;
     my $service_args = delete($args{from}) || [];
@@ -371,7 +406,7 @@ Please see: L<Webservice::InterMine::Service>
 =cut
 
 sub get_service {
-    my $class = shift;
+    my $class = ($_[0] and $_[0] eq "Webservice::InterMine") ? shift : "Webservice::InterMine";
 
     my @args = (@_ == 1 and ref $_[0] eq 'HASH') ? %{$_[0]} : @_;
     my $url;

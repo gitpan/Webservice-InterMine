@@ -125,6 +125,24 @@ INSTALLATION AND DEPENDENCIES
     are done, you can view the lists in the webservice, where you can use
     the analysis widgets to assess the data you have processed.
 
+IMPORTS
+    The following functions are imported into the callers namespace. This
+    can be prevented by "require"-ing the module instead.
+
+    *   get_service
+
+    *   new_query
+
+    *   resultset
+
+    *   template
+
+    *   get_list
+
+    *   new_list
+
+    *   load_query
+
 METHODS
   new_query( [from => \@service_args], [%query_args] )
     returns a new query object for you to fill in with constraints before

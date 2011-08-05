@@ -10,14 +10,12 @@ use Test::Exception;
 
 use MooseX::Types::Moose qw(Bool);
 
-$SIG{__WARN__} = \&Carp::cluck;
-
 my $do_live_tests = $ENV{RELEASE_TESTING};
 
 unless ($do_live_tests) {
     plan( skip_all => "Acceptance tests for release testing only" );
 } else {
-    plan( tests => 84 );
+    plan( tests => 94 );
 }
 
 my $module = 'Webservice::InterMine';
@@ -284,7 +282,7 @@ my $exp_res = [
 
 for my $row (0, 1, 2) {
     for my $col (0, 1) {
-        is($res->[$col][$row], $exp_res->[$col][$row]);
+        is($res->[$row][$col], $exp_res->[$row][$col]);
     }
 }
 
@@ -389,7 +387,19 @@ is($res->[0][1], $exp_res->[0][1], "Can get results for queries loaded from xml"
 
 AUTHENTICATION: {
     require Webservice::InterMine::Service;
-    my $authenticated_service = Webservice::InterMine::Service->new($url, "intermine-test-user", "intermine-test-user-password");
+    my $authenticated_service;
+    
+    SKIP: {
+        unless (eval "require Test::Warn;") {
+            eval {no warnings; $authenticated_service = Webservice::InterMine::Service->new($url, "intermine-test-user", "intermine-test-user-password");};
+            skip "Test Warn not installed", 1;
+        } else {
+            Test::Warn::warning_like(
+                sub {$authenticated_service = Webservice::InterMine::Service->new($url, "intermine-test-user", "intermine-test-user-password");},
+                qr/API token/, "Warns people who are not careful with their passwords"
+            );
+        }
+    }
 
     my $template = $authenticated_service->template("private-template-1");
 
@@ -422,6 +432,28 @@ DBIX_SUGAR: {
     is(@results, 3);
     is_deeply([map {$_->getName} @results], ['Michael Scott', 'Gilles Triquet', 'David Brent'])
         or diag explain(\@results);
+
+}
+
+TEST_IMPORTED_FNS: {
+    my @results = resultset("Manager")->search({"department.name" => 'Sales'});
+    is(@results, 3);
+    is_deeply([map {$_->getName} @results], ['Michael Scott', 'Gilles Triquet', 'David Brent'])
+        or diag explain(\@results);
+    
+    my $res = get_template('employeesFromCompanyAndDepartment')->results_with(valueA => "CompanyB");
+    my $exp_res = [
+        ['EmployeeB1','40'],
+        ['EmployeeB2','50'],
+        ['EmployeeB3', '60']
+    ];
+    for my $row (0, 1, 2) {
+        for my $col (0, 1) {
+            is($res->[$row][$col], $exp_res->[$row][$col]);
+        }
+    }
+
+    is ($module->get_service->version, get_service()->version);
 
 }
 

@@ -41,6 +41,7 @@ objects you can use for running queries.
 
 use Moose;
 with 'Webservice::InterMine::Role::ModelOwner';
+use strict;
 use Net::HTTP;
 use URI;
 use LWP;
@@ -87,6 +88,9 @@ around BUILDARGS => sub {
 # validate the initial state of the object
 sub BUILD {
     my $self = shift;
+    if ($self->has_user and $self->version >= 6) {
+        warnings::warnif("deprecated", "The use of username and password authentication is deprecated. Please use API token authentication");
+    }
     if ($self->has_user xor $self->has_pass) {
         croak "User name or password supplied, but not both";
     }
@@ -343,6 +347,22 @@ Alias for resultset()
 =cut
 
 sub table { goto &resultset }
+
+=head2 select(@views) -> query with views
+
+Return a new query object with the given views selected for output.
+This is a shortcut method for C<< $service->new_query->select(@_) >>.
+
+  $service->select("Gene.*", "proteins.*")->where("Gene" => {in => "my-list"})->show;
+
+=cut
+
+sub select {
+    my $self = shift;
+    my @views = @_;
+    my $query = $self->new_query->select(@views);
+    return $query;
+}
 
 =head2 new_from_xml(source_file => $file_name)
 

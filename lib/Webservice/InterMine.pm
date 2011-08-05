@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = "0.9807";
+our $VERSION = "0.9808";
 
 =head1 NAME
 
@@ -14,18 +14,37 @@ Webservice::InterMine - modules for interacting with InterMine datawarehouse web
 
     use Webservice::InterMine;
 
-    my $service  = Webservice::InterMine->new_service($url, $user, $pass);
+    my $service  = get_service($url, $user, $pass);
     my $template = $service->template($name);
     my $results  = $template->results_with(valueA => 'x', valueB => 'y');
 
-  OR
+OR:
 
     use Webservice::InterMine 'flymine', 'SOMETOKEN';
 
-    my $query    = Webservice::InterMine->new_query(class => 'Gene');
-    my $results  = $query->select('symbol', 'primaryIdentifier', 'pathways.*')
-                         ->where(symbol => [qw/H bib eve zen/])
-                         ->all();
+    my $results = new_query(class => 'Gene')
+                    ->select('symbol', 'primaryIdentifier', 'pathways.*')
+                    ->where(symbol => [qw/H bib eve zen/])
+                    ->all();
+
+OR:
+
+    use Webservice::InterMine 'flymine', 'SOMETOKEN', ':no-import';
+
+    my $results = Webservice::InterMine->new_query(class => 'Gene')
+                    ->select('symbol', 'primaryIdentifier', 'pathways.*')
+                    ->where(symbol => [qw/H bib eve zen/])
+                    ->all();
+
+OR: 
+
+    use WebService::InterMine 'flymine';
+
+    my $query = load_query(source_file => "my_query.xml");
+
+    while (my $result = <$query>) {
+        process($result);
+    }
 
 =head1 DESCRIPTION
 
@@ -88,13 +107,18 @@ If you pass parameters to import, a default service will be set
 meaning method calls will not require the webservice url. Unless you are
 intending to access multiple services, this form is recommended.
 
+If you do not wish to import the standard functions into your namespace, instead
+choosing to call them as class methods, but still wish to set a default service, 
+you can use the following syntax:
+
+    use Webservice::InterMine "flymine", "TOKEN", ':no-import';
+
 =head2 Using Queries
 
 The main reason to access the InterMine webservices is to query for data. 
 The most flexible way to do this is by using Queries:
 
-    my $query = $service->new_query(class => "Gene");
-    $query->select("*", "proteins.*")->where(symbol => [qw/h r eve zen bib/]);
+    my $query = resultset("Gene")->select("*", "proteins.*")->where(symbol => [qw/h r eve zen bib/]);
 
     while (my $gene = <$query>) {
         print $gene->symbol, map {$_->name} $gene->proteins, "\n";
@@ -147,7 +171,7 @@ the module instead.
 
 =item * resultset
 
-=item * template
+=item * get_template
  
 =item * get_list
 
@@ -174,16 +198,18 @@ my %services;
 my %pass_for;
 my %user_for;
 
-our @EXPORT_OK = ("get_service", "new_query", "template", "get_list", "new_list", "resultset");
+our @EXPORT_OK = ("get_service", "new_query", "get_template", "get_list", "new_list", "resultset", "load_query");
 
 sub import {
     my $class = shift;
-    my @args = @_;
+    my @args = grep {$_ ne ':no-import'} @_;
     if (@args) {
         my $service = $class->get_service(@args);
         $service_url = $service->root;
     }
-    Webservice::InterMine->export_to_level(1, $class, @EXPORT_OK);
+    if (@args == @_) { # ie. the ':no-import' flag was not passed.
+        Webservice::InterMine->export_to_level(1, $class, @EXPORT_OK);
+    }
 }
 
 =head2 new_query( [from => \@service_args], [%query_args] )
@@ -277,7 +303,7 @@ sub get_list {
     return $class->get_service(@$service_args)->list($list_name);
 }
 
-=head2 load_query([\@service_args], source_file|source_string => $source, %opts )
+=head2 load_query(source_file|source_string => $source, %opts, [from => [\@service_args]])
 
 Returns a query object based on xml you have previously saved,
 either as a string or as a file. For a file pass:
@@ -323,6 +349,14 @@ sub template {
     my $service_args = delete($args{from}) || [];
     return $class->get_service(@$service_args)->template( $name, @_ );
 }
+
+=head2 get_template 
+
+Alias for C<template>
+
+=cut
+
+sub get_template { goto &template }
 
 =head2 saved_query( $name, [from => \@service_args], %options ) B<NOT IMPLEMENTED YET>
 

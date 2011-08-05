@@ -5,18 +5,37 @@ NAME
 SYNOPSIS
         use Webservice::InterMine;
 
-        my $service  = Webservice::InterMine->new_service($url, $user, $pass);
+        my $service  = get_service($url, $user, $pass);
         my $template = $service->template($name);
         my $results  = $template->results_with(valueA => 'x', valueB => 'y');
 
-      OR
+    OR:
 
         use Webservice::InterMine 'flymine', 'SOMETOKEN';
 
-        my $query    = Webservice::InterMine->new_query(class => 'Gene');
-        my $results  = $query->select('symbol', 'primaryIdentifier', 'pathways.*')
-                             ->where(symbol => [qw/H bib eve zen/])
-                             ->all();
+        my $results = new_query(class => 'Gene')
+                        ->select('symbol', 'primaryIdentifier', 'pathways.*')
+                        ->where(symbol => [qw/H bib eve zen/])
+                        ->all();
+
+    OR:
+
+        use Webservice::InterMine 'flymine', 'SOMETOKEN', ':no-import';
+
+        my $results = Webservice::InterMine->new_query(class => 'Gene')
+                        ->select('symbol', 'primaryIdentifier', 'pathways.*')
+                        ->where(symbol => [qw/H bib eve zen/])
+                        ->all();
+
+    OR:
+
+        use WebService::InterMine 'flymine';
+
+        my $query = load_query(source_file => "my_query.xml");
+
+        while (my $result = <$query>) {
+            process($result);
+        }
 
 DESCRIPTION
     This distribution is the client interface to any implementation of the
@@ -81,12 +100,17 @@ INSTALLATION AND DEPENDENCIES
     method calls will not require the webservice url. Unless you are
     intending to access multiple services, this form is recommended.
 
+    If you do not wish to import the standard functions into your namespace,
+    instead choosing to call them as class methods, but still wish to set a
+    default service, you can use the following syntax:
+
+        use Webservice::InterMine "flymine", "TOKEN", ':no-import';
+
   Using Queries
     The main reason to access the InterMine webservices is to query for
     data. The most flexible way to do this is by using Queries:
 
-        my $query = $service->new_query(class => "Gene");
-        $query->select("*", "proteins.*")->where(symbol => [qw/h r eve zen bib/]);
+        my $query = resultset("Gene")->select("*", "proteins.*")->where(symbol => [qw/h r eve zen bib/]);
 
         while (my $gene = <$query>) {
             print $gene->symbol, map {$_->name} $gene->proteins, "\n";
@@ -135,7 +159,7 @@ IMPORTS
 
     *   resultset
 
-    *   template
+    *   get_template
 
     *   get_list
 
@@ -187,7 +211,7 @@ METHODS
     Get the list of the given name from the default service, or the given
     service if details are supplied.
 
-  load_query([\@service_args], source_file|source_string => $source, %opts )
+  load_query(source_file|source_string => $source, %opts, [from => [\@service_args]])
     Returns a query object based on xml you have previously saved, either as
     a string or as a file. For a file pass:
 
@@ -213,6 +237,9 @@ METHODS
     webservice.
 
     Please see Webservice::InterMine::Query::Template
+
+  get_template
+    Alias for "template"
 
   saved_query( $name, [from => \@service_args], %options ) NOT IMPLEMENTED YET
     returns the named saved_query (if it exists - if not it returns undef).

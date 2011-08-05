@@ -35,6 +35,7 @@
          "recommends" : {
             "Perl::Tidy" : "20070801",
             "Spreadsheet::WriteExcel" : 0,
+            "Test::Warn" : 0,
             "YAML::Syck" : "1.07"
          },
          "requires" : {
@@ -71,7 +72,7 @@
    "provides" : {
       "Webservice::InterMine" : {
          "file" : "lib/Webservice/InterMine.pm",
-         "version" : "0.9807"
+         "version" : "0.9808"
       },
       "Webservice::InterMine::Constraint" : {
          "file" : "lib/Webservice/InterMine/Constraint.pm",
@@ -376,5 +377,5 @@
          "http://dev.perl.org/licenses/"
       ]
    },
-   "version" : "0.9807"
+   "version" : "0.9808"
 }

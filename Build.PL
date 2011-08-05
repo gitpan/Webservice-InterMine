@@ -42,6 +42,7 @@ my $build = Module::Build->new(
         'YAML::Syck'              => 1.07,
         'Spreadsheet::WriteExcel' => 0,
         'Perl::Tidy'                => 20070801,
+        'Test::Warn'              => 0,
     },
     build_requires => {
         'Module::Build'             => '0.36',

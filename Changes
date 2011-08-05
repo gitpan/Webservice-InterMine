@@ -114,6 +114,9 @@ Revision history for Webservice-InterMine
         * Switched to JSON::XS for result parsing for performance reasons.
 0.9806: Tue Aug  2 23:41:12 BST 2011
         * Made select and add_to_select conform accross clients - select now replaces the view
+0.9808: Fri Aug  5 12:21:23 BST 2011
+        * Export Webservice::InterMine methods by default (with options to exclude them) 
+        * Deprecated username and password authentication on services that support tokens
 
         
 

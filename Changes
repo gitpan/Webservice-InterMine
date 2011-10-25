@@ -121,6 +121,7 @@ Revision history for Webservice-InterMine
         * Backwards compatibility through to version 3 regarding JSON container formats
 0.9810: Bug-fix release
 0.9811: Allow ResultRow#to_href to produce either short or long key versions of hrefs
+0.9812: Added summarise method to runnable queries to get path summary information
 
         
 

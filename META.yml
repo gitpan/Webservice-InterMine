@@ -23,7 +23,7 @@ name: Webservice-InterMine
 provides:
   Webservice::InterMine:
     file: lib/Webservice/InterMine.pm
-    version: 0.9814
+    version: 0.9815
   Webservice::InterMine::Constraint:
     file: lib/Webservice/InterMine/Constraint.pm
     version: 0
@@ -225,15 +225,6 @@ provides:
   Webservice::InterMine::ServiceResolver:
     file: lib/Webservice/InterMine/ServiceResolver.pm
     version: 0
-  Webservice::InterMine::Simple:
-    file: lib/Webservice/InterMine/Simple.pm
-    version: 0
-  Webservice::InterMine::Simple::Query:
-    file: lib/Webservice/InterMine/Simple/Query.pm
-    version: 0
-  Webservice::InterMine::Simple::Service:
-    file: lib/Webservice/InterMine/Simple/Service.pm
-    version: 0
   Webservice::InterMine::SortOrder:
     file: lib/Webservice/InterMine/SortOrder.pm
     version: 0
@@ -281,4 +272,4 @@ requires:
   perl: v5.8.3
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.9814
+version: 0.9815

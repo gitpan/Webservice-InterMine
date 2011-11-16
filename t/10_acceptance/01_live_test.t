@@ -403,7 +403,7 @@ AUTHENTICATION: {
 
     my $template = $authenticated_service->template("private-template-1");
 
-    is($template->get_count, 48, "Can read a private template");
+    is($template->get_count, 53, "Can read a private template");
 
     my $token_service = Webservice::InterMine::Service->new($url, 'a1v3V1X0f3hdmaybq0l6b7Z4eVG');
 
@@ -411,7 +411,7 @@ AUTHENTICATION: {
 
     my $template2 = $authenticated_service->template("private-template-1");
 
-    is($template2->get_count, 48, "Can read a private template");
+    is($template2->get_count, 53, "Can read a private template");
 }
 
 
@@ -431,8 +431,8 @@ DBIX_SUGAR: {
 
     is(@results, 3, "Search returns result");
     is_deeply(
+        [ 'David Brent', 'Michael Scott', 'Gilles Triquet',], 
         [map {$_->getName} @results], 
-        ['Michael Scott', 'Gilles Triquet', 'David Brent'], 
         "And they have the expected content - reified objects"
     ) or diag explain(\@results);
 
@@ -442,8 +442,8 @@ TEST_IMPORTED_FNS: {
     my @results = resultset("Manager")->search({"department.name" => 'Sales'});
     is(@results, 3, "Can get results with search");
     is_deeply(
+        [ 'David Brent', 'Michael Scott', 'Gilles Triquet',], 
         [map {$_->getName} @results], 
-        ['Michael Scott', 'Gilles Triquet', 'David Brent'], 
         "And they have the expected content - reified objects"
     ) or diag explain(\@results);
     

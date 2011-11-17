@@ -771,6 +771,10 @@ sub fetch {
     my $uri  = $self->build_uri($url);
     warn "FETCHING $uri " . gettimeofday() if $ENV{DEBUG};
     my $resp = $self->agent->get($uri);
+    # Correct incorrect bases.
+    if ($uri->host ne $resp->base->host) {
+        $self->root->host($resp->base->host);
+    }
     if ( $resp->is_error ) {
         confess $resp->status_line, $resp->content;
     } else {

@@ -40,7 +40,7 @@ $fake_lwp->mock(
     get => sub {
 	my $self = shift;
 	my $uri  = shift;
-	my ($code, $msg, $head, $content) = (200, 'OK', [foo => 'bar']);
+	my ($code, $msg, $head, $content) = (200, 'OK', [foo => 'bar', 'Content-Location' => $uri]);
 	if ($uri =~ m!templates/xml!) {
 	    $content = $templates;
 	}

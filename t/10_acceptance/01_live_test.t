@@ -15,7 +15,7 @@ my $do_live_tests = $ENV{RELEASE_TESTING};
 unless ($do_live_tests) {
     plan( skip_all => "Acceptance tests for release testing only" );
 } else {
-    plan( tests => 96 );
+    plan( tests => 186 );
 }
 
 my $module = 'Webservice::InterMine';
@@ -467,5 +467,25 @@ TEST_LIST_STATUS: {
     my @lists = get_service("www.flymine.org/query")->get_lists();
     ok($lists[0]->has_status, "Status is provided");
     is($lists[0]->status, "CURRENT", "And list is current");
+}
+
+TEST_DEFAULT_FORMATS: {
+    my $query = resultset("Manager")->select("name", "department.name");
+    my $rr = "Webservice::InterMine::ResultRow";
+    while (my $row = <$query>) {
+        ok($row->isa($rr), "isa result-row");
+    }
+
+    my $ro = "Webservice::InterMine::ResultObject";
+    my $it = $query->iterator(as => 'ro');
+    while (my $row = <$it>) {
+        ok($row->isa($ro), "isa result-object");
+    }
+
+    my $class = "Manager";
+    $it = $query->iterator(as => 'objects');
+    while (my $row = <$it>) {
+        ok($row->isa($class), "isa Manager");
+    }
 }
 

@@ -62,13 +62,10 @@ $fake_IOSock->set_isa('Net::HTTP');
 $fake_IOSock->fake_module(
     'Net::HTTP',
     new => sub {
-	delete $fake_IOSock->{io};
-	$fake_IOSock->{io} = IO::File->new($results_file, 'r');
-	return $fake_IOSock;
+        delete $fake_IOSock->{io};
+        $fake_IOSock->{io} = IO::File->new($results_file, 'r');
+        return $fake_IOSock;
     },
-);
-$fake_IOSock->mock(
-    write_request => sub {},
 );
 $fake_IOSock->mock(
     getline => sub {
@@ -76,6 +73,7 @@ $fake_IOSock->mock(
 	return $self->{io}->getline;
     },
 );
+$fake_IOSock->mock(write_request => sub { return 1; });
 $fake_IOSock->mock(
     close => sub {
 	my $self = shift;

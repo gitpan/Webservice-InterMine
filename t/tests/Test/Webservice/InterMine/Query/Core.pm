@@ -146,6 +146,20 @@ sub add_binary_constraint:Test(24) {
 
 }
 
+sub remove_constraint:Test(4) {
+    my $test = shift;
+    my $obj = $test->{object};
+    my $initial_count = $obj->count_constraints;
+    my $conA = $obj->add_constraint("Employee.age", "=", "Foo");
+    my $conB = $obj->add_constraint("Employee.age", "=", "Boo");
+    is($initial_count + 2, $obj->count_constraints, "Initial constraint count is correct");
+    $obj->remove_constraint($conA);
+    is($initial_count + 1, $obj->count_constraints, "Can remove with obj");
+    $obj->remove_constraint($conB->code);
+    is($initial_count + 0, $obj->count_constraints, "Can remove with code");
+    dies_ok {$obj->remove_constraint("ZZ")} "Dies on non existent constraints";
+}
+
 sub add_loop_constraint:Test(7) {
 
     my $test = shift;

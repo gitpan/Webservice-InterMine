@@ -376,7 +376,8 @@ sub get_constraint {
     my $code = shift;
     confess "get_constraint needs one argument - "
       . "the code of the constraint you want - "
-      . "and it must be one or two alphabetic characters"
+      . "and it must be one or two uppercase alphabetic characters,"
+      . " not $code"
       unless ( $code and $code =~ /^[A-Z]{1,2}$/ );
     my $criterion = sub { 
         $_->does('Webservice::InterMine::Constraint::Role::Operator')
@@ -417,6 +418,26 @@ sub remove {
             $self->$del($i);
         }
         $i++;
+    }
+}
+
+=head2 remove_constraint($constraint | $code)
+
+Remove the given constraint. If a string is passed instead, it is assumed
+to be the code for this constraint, and the constraint with the given 
+code is removed instead.
+
+=cut
+
+sub remove_constraint {
+    my $self = shift;
+    if (ref $_[0]) {
+        $self->remove(@_);
+    } else {
+        my $code = shift;
+        my $constraint = $self->get_constraint($code)
+            or confess "No constraint with code $code!";
+        $self->remove($constraint);
     }
 }
 

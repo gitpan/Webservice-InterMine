@@ -132,6 +132,7 @@ Revision history for Webservice-InterMine
 0.9900: Use of new json format where available
         Support for redirection and private ports
         Use of POST where possible.
+0.9901: Added remove_constraint method. 
 
         
 

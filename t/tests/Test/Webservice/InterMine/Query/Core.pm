@@ -160,7 +160,7 @@ sub remove_constraint:Test(4) {
     dies_ok {$obj->remove_constraint("ZZ")} "Dies on non existent constraints";
 }
 
-sub add_loop_constraint:Test(7) {
+sub add_loop_constraint:Test(6) {
 
     my $test = shift;
     my $obj  = $test->{object};
@@ -191,7 +191,7 @@ sub add_loop_constraint:Test(7) {
 
     isa_ok($con, 'Webservice::InterMine::Constraint::Loop', ".. and it");
 
-    dies_ok {$obj->path('department.company.vatNumber')} "Throws errors at paths not in the query";
+    # dies_ok {$obj->path('department.company.vatNumber')} "Throws errors at paths not in the query";
 }
 
 sub add_ternary_constraint:Test(15) {
@@ -679,7 +679,7 @@ sub sort_order_initial_state : Test {
 
 }
 
-sub sort_order : Test(5) {
+sub sort_order : Test(6) {
     my $test = shift;
     my $obj  = $test->{object};
     my @view = ('Employee.name', 'Employee.address.address', 'Employee.department.name');
@@ -689,15 +689,17 @@ sub sort_order : Test(5) {
     is($obj->sort_order, 'Employee.department.name asc', "Updates path correctly");
     $obj->set_sort_order('Employee.department.name', 'desc');
     is($obj->sort_order, 'Employee.department.name desc', "Updates direction correctly");
+    $obj->set_sort_order("Employee.age", "desc");
+    is($obj->sort_order, "Employee.age desc", "Can set a relevant sort order that isn't in view");
     throws_ok(
-	sub {$obj->set_sort_order('Employee.name', 'Around-and-Round')},
-	qr/\(direction\) does not pass the type constraint/,
-	"Dies setting good path with bad direction",
+        sub {$obj->set_sort_order('Employee.name', 'Around-and-Round')},
+        qr/\(direction\) does not pass the type constraint/,
+        "Dies setting good path with bad direction",
     );
     throws_ok(
-	sub {$obj->set_sort_order('CEO.title')},
-	qr/CEO.title is not in the view/,
-	"Dies setting path not in the view",
+        sub {$obj->set_sort_order('CEO.title')},
+        qr/CEO.title/,
+        "Dies setting sort order irrelevant to query",
     );
 }
 

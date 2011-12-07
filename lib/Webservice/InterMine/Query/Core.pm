@@ -11,6 +11,7 @@ use Carp;
 use List::Util qw/reduce/;
 use List::MoreUtils qw/uniq natatime/;
 use Scalar::Util qw/blessed/;
+use Perl6::Junction qw/any/;
 
 use MooseX::Types::Moose qw/Str Bool/;
 use InterMine::Model::Types qw/PathList PathHash PathString/;
@@ -72,7 +73,7 @@ sub path {
     @_ == 2 or croak "Expected one argument - a path expression, got: @_";
     my @paths = $self->all_paths or croak "This query does not have any paths yet";
     $str = $self->prefix_path($str);
-    croak "$str is not a path in this query" unless (grep {$str eq $_} @paths);
+#    croak "$str is not a path in this query" unless (grep {$str eq $_} @paths);
     my $path = Webservice::InterMine::Path->new($str, $self, $self->type_dict);
     return $path;
 }
@@ -179,6 +180,7 @@ Used internally to process shortened, headless paths.
 
 sub prefix_path {
     my ($self, $str) = @_;
+    die "No path" unless $str;
     if ($self->has_root_path) {
         my $root = $self->root_path;
         my $new_path = ($str =~ /^$root/) ? $str : $self->root_path . ".$str";
@@ -1029,14 +1031,32 @@ sub _validate {    # called internally, obeys is_validating
     my $self = shift;
     return unless $self->is_validating;    # Can be paused, and resumed
     my @errs = @_;
+    my @from_paths = $self->_get_from_paths();
     push @errs, $self->validate_paths;
-    push @errs, $self->validate_sort_order;
+    push @errs, $self->validate_sort_order(@from_paths);
     push @errs, $self->validate_subclass_constraints;
     push @errs, $self->validate_consistency;
 
     #   push @errs, $self->validate_logic;
     @errs = grep { $_ } @errs;
     confess join( '', @errs ) if @errs;
+}
+
+sub _get_from_paths {
+    my $self = shift;
+    my @from;
+    push @from, map {s/\.[^\.]*$//; $_} $self->views;
+    my @con_paths = $self->map_constraints(sub { $_->path});
+    for my $cp (@con_paths) {
+        if (my $p = eval {$self->path}) {
+            if ($p->end_is_attribute) {
+                push @from, $p->prefix->to_string;
+            } else {
+                push @from, $p->to_string;
+            }
+        }
+    }
+    return @from;
 }
 
 before _validate => sub {
@@ -1077,7 +1097,9 @@ sub clean_out_irrelevant_sort_orders {
     my $self = shift;
     return if $self->view_is_empty;
     return if (not $self->has_sort_order or $self->sort_order_is_empty);
-    my @relevant_sos = $self->filter_sort_order(sub {$self->is_in_view($_->path)});
+    my @from = $self->_get_from_paths;
+    my @relevant_sos = $self->filter_sort_order(sub {
+            any(@from) eq $self->path($_->path)->prefix->to_string});
     if (@relevant_sos) {
         $self->_set_sort_order(\@relevant_sos);
     } else {
@@ -1088,14 +1110,24 @@ sub clean_out_irrelevant_sort_orders {
 
 sub validate_sort_order {
     my $self = shift;
+    my @from_paths = @_;
+    my @errors;
     return if $self->view_is_empty;
     if ($self->has_sort_order) {
         for my $so ($self->sort_orders) {
-            unless ( grep { $so->path eq $_ } $self->views ) {
-                return $so->path . " is not in the view\n";
+            my $p = eval { $self->path($so->path)};
+            if ($p) {
+                unless ( $p->prefix->to_string eq any(@from_paths) ) {
+                    push @errors, sprintf(
+                        "Order element %s refers to a class (%s) which isn't in the query\n",  
+                        $so->path, $p->prefix->to_string);
+                }
+            } else {
+                push @errors, sprintf("Order element path %s is invalid\n", $so->path);
             }
         }
     }
+    return @errors if @errors;
     return;
 }
 

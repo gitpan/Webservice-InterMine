@@ -133,6 +133,7 @@ Revision history for Webservice-InterMine
         Support for redirection and private ports
         Use of POST where possible.
 0.9901: Added remove_constraint method. 
+0.9902: Added better validation of sort-orders, allowing valid orders that were previously disallowed
 
         
 

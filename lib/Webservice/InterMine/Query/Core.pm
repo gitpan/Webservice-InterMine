@@ -71,9 +71,9 @@ with the subclass information contained in the query.
 sub path {
     my ($self, $str) = @_;
     @_ == 2 or croak "Expected one argument - a path expression, got: @_";
-    my @paths = $self->all_paths or croak "This query does not have any paths yet";
+    # my @paths = $self->all_paths or croak "This query does not have any paths yet";
     $str = $self->prefix_path($str);
-#    croak "$str is not a path in this query" unless (grep {$str eq $_} @paths);
+    # croak "$str is not a path in this query" unless (grep {$str eq $_} @paths);
     my $path = Webservice::InterMine::Path->new($str, $self, $self->type_dict);
     return $path;
 }
@@ -191,6 +191,36 @@ sub prefix_path {
         return $str;
     }
 }
+
+=head2 to_query
+
+returns self to fulfil the Listable interface.
+
+=cut
+
+sub to_query {
+    my $self = shift;
+    return $self;
+}
+
+=head2 clone 
+
+Return a clone of this query.
+
+=cut
+
+sub clone {
+    my $self  = shift;
+    my $clone = bless {%$self}, ref $self;
+    $clone->{constraints} = [];
+    $clone->suspend_validation;
+    for my $con ($self->all_constraints) {
+        $clone->add_constraint(%$con);
+    }
+    $clone->resume_validation;
+    return $clone;
+}
+    
 
 =head2 DEMOLISH
 
@@ -830,9 +860,6 @@ sub search {
     my $self = shift;
     my $constraints = shift;
     my $results_args = shift || {as => 'jsonobjects', json => 'instantiate'};
-    if ($self->view_is_empty and $self->has_root_path) {
-        $self->select("*");
-    }
     if (ref $constraints eq 'HASH') {
         while (my ($path, $con) = each(%$constraints)) {
             $self->add_constraint($path, $con);
@@ -847,6 +874,9 @@ sub search {
     }
 
     if (wantarray) {
+        if ($self->view_is_empty and $self->has_root_path) {
+            $self->select("*");
+        }
         return $self->results(%$results_args);
     } else {
         return $self;

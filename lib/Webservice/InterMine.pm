@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = "0.9902";
+our $VERSION = "0.9903";
 
 =head1 NAME
 

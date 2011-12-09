@@ -28,6 +28,7 @@ WriteMakefile
                    'Perl6::Junction' => 0,
                    'Pod::Usage' => 0,
                    'Scalar::Util' => 0,
+                   'Set::CrossProduct' => 0,
                    'Set::Object' => 0,
                    'Test::Class' => 0,
                    'Test::Exception' => 0,

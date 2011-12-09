@@ -17,6 +17,7 @@
       "build" : {
          "requires" : {
             "Module::Build" : "0.36",
+            "Set::CrossProduct" : 0,
             "Test::Class" : 0,
             "Test::Exception" : 0,
             "Test::MockObject" : 0,
@@ -72,7 +73,7 @@
    "provides" : {
       "Webservice::InterMine" : {
          "file" : "lib/Webservice/InterMine.pm",
-         "version" : "0.9903"
+         "version" : "0.9904"
       },
       "Webservice::InterMine::Constraint" : {
          "file" : "lib/Webservice/InterMine/Constraint.pm",
@@ -365,5 +366,5 @@
          "http://dev.perl.org/licenses/"
       ]
    },
-   "version" : "0.9903"
+   "version" : "0.9904"
 }

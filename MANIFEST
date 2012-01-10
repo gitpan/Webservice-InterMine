@@ -77,6 +77,7 @@ lib/Webservice/InterMine/ResultRow.pm
 lib/Webservice/InterMine/Role/Described.pm
 lib/Webservice/InterMine/Role/HasQuery.pm
 lib/Webservice/InterMine/Role/KnowsJSON.pm
+lib/Webservice/InterMine/Role/Listable.pm
 lib/Webservice/InterMine/Role/Logical.pm
 lib/Webservice/InterMine/Role/ModelOwner.pm
 lib/Webservice/InterMine/Role/Named.pm

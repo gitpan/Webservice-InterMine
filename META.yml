@@ -24,7 +24,7 @@ name: Webservice-InterMine
 provides:
   Webservice::InterMine:
     file: lib/Webservice/InterMine.pm
-    version: 0.9907
+    version: 0.9908
   Webservice::InterMine::Constraint:
     file: lib/Webservice/InterMine/Constraint.pm
     version: 0
@@ -205,6 +205,9 @@ provides:
   Webservice::InterMine::Role::KnowsJSON:
     file: lib/Webservice/InterMine/Role/KnowsJSON.pm
     version: 0
+  Webservice::InterMine::Role::Listable:
+    file: lib/Webservice/InterMine/Role/Listable.pm
+    version: 0
   Webservice::InterMine::Role::Logical:
     file: lib/Webservice/InterMine/Role/Logical.pm
     version: 0
@@ -273,4 +276,4 @@ requires:
   perl: v5.8.3
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.9907
+version: 0.9908

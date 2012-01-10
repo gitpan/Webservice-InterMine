@@ -144,6 +144,8 @@ Revision history for Webservice-InterMine
 
 0.9907: Tue Jan 10 16:50:01 GMT 2012
         Separation of concept of Listable into a general listable and a listable implementation for queries.
+0.9908: Tue Jan 10 18:38:04 GMT 2012
+        Use general roles to allow better subclassing.
 
         
 

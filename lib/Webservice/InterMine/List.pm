@@ -49,7 +49,7 @@ use MooseX::Types::Moose         qw/ArrayRef Undef Bool Str/;
 use InterMine::Model::Types      qw/PathString/;
 use Webservice::InterMine::Types qw/
     Date ListFactory ResultIterator Query File
-    List ListableQuery ListOfLists ListOfListableQueries
+    List Listable ListOfLists ListOfListables
     ListOperable ListOfListOperables SetObject TruthValue
 /;
 require Set::Object;
@@ -57,7 +57,7 @@ require Set::Object;
 use constant {
     LIST_APPEND_PATH => '/lists/append/json',
     RENAME_PATH => '/lists/rename/json',
-    LISTABLE => 'Webservice::InterMine::Query::Roles::Listable',
+    LISTABLE => 'Webservice::InterMine::Role::Listable',
     LIST => 'Webservice::InterMine::List',
 };
 
@@ -611,9 +611,9 @@ sub append {
         sub {}
     );
     match_on_type $ids => (
-        ListableQuery, sub {
+        Listable, sub {
             my $uri = $self->service->build_uri($_->get_list_append_uri,
-                listName => $name, path => $path, $_->get_request_parameters,
+                listName => $name, path => $path, $_->get_list_request_parameters,
             );
             $resp = $self->service->get($uri);
         },

@@ -1,6 +1,6 @@
 package Webservice::InterMine::Role::Listable;
 
-=head NAME
+=head1 NAME
 
 Webservice::InterMine::Role::Listable - Trait for things that can be made into lists
 

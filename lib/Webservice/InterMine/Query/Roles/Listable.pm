@@ -1,6 +1,6 @@
 package Webservice::InterMine::Query::Roles::Listable;
 
-=head NAME
+=head1 NAME
 
 Webservice::InterMine::Query::Roles::Listable - Trait for queries that are Listable
 

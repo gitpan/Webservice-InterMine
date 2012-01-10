@@ -139,6 +139,11 @@ Revision history for Webservice-InterMine
 0.9904: Added dependency on Set::Crossproduct for testing.
         More tests for list constraint construction.
         Consistent ability to use subqueries and lists in constraints.
+0.9905: Changed expectations in live tests to take into account the fact that servers now return more thoroughly escaped TSV files.
+0.9906: Added CONTAINS, LIKE, NOT LIKE, DOES NOT CONTAIN, as binary operators.
+
+0.9907: Tue Jan 10 16:50:01 GMT 2012
+        Separation of concept of Listable into a general listable and a listable implementation for queries.
 
         
 

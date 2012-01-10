@@ -61,7 +61,7 @@ require overload;
 use MooseX::Types -declare => [
     qw(
         Constraint ConstraintList ConstraintFactory
-        ConstraintCode UnaryOperator BinaryOperator FakeBinaryOperator
+        ConstraintCode UnaryOperator BinaryOperator FakeBinaryOperator LCBinaryOperator
         TernaryOperator MultiOperator LoopOperator ListOperator NotInWithUnderScores
         LCUnaryOperator LCLoopOperator LCListOperator LCTernaryOperator NotQuiteMulti 
         XmlLoopOperators NoSpaceLoopOperator
@@ -143,8 +143,10 @@ enum UnaryOperator,  [ 'IS NOT NULL', 'IS NULL' ];
 enum LCUnaryOperator,  [ 'is not null', 'is null' ];
 coerce UnaryOperator, from LCUnaryOperator, via {uc($_)};
 
-enum BinaryOperator, [ '=', '!=', '<', '>', '>=', '<=',];
+enum BinaryOperator, [ '=', '!=', '<', '>', '>=', '<=', 'CONTAINS', 'LIKE', 'NOT LIKE', 'DOES NOT CONTAIN'];
 enum FakeBinaryOperator, ['eq', 'ne', 'lt', 'gt', 'ge', 'le', 'EQ', 'NE', 'LT', 'GT', 'GE', 'LE'];
+enum LCBinaryOperator, ["contains", "like", "not like", "does not contain"];
+coerce BinaryOperator, from LCBinaryOperator, via {uc($_)};
 coerce BinaryOperator, from FakeBinaryOperator, via {$fake_to_real_ops{lc($_)}};
 
 enum LoopOperator,   [ 'IS', 'IS NOT',];

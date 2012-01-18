@@ -148,6 +148,8 @@ Revision history for Webservice-InterMine
         Use general roles to allow better subclassing.
 0.9909: Tue Jan 10 19:00:18 GMT 2012
         Bux fix release for correct role use to allow extension.
+0.9910: Wed Jan 18 14:15:52 GMT 2012
+        Added support for lazy reference fetching, as found in the Python and Ruby clients
 
         
 

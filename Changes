@@ -150,6 +150,8 @@ Revision history for Webservice-InterMine
         Bux fix release for correct role use to allow extension.
 0.9910: Wed Jan 18 14:15:52 GMT 2012
         Added support for lazy reference fetching, as found in the Python and Ruby clients
+0.9911: Fri Feb  3 12:07:25 GMT 2012
+        Added support and tests for lazy attribute fetching.
 
         
 

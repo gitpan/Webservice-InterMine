@@ -44,7 +44,7 @@ WriteMakefile
                            'Set::CrossProduct' => 0,
                            'Moose' => '0.95',
                            'URI' => '1.37',
-                           'InterMine::Model' => '0.9900',
+                           'InterMine::Model' => '0.9901',
                            'Time::HiRes' => 0,
                            'XML::Parser::PerlSAX' => '0.08',
                            'MIME::Base64' => 0,

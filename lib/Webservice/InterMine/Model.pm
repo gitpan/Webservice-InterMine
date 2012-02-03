@@ -25,11 +25,12 @@ sub set_service {
 sub lazy_fetch {
     my $self = shift;
     my ($cd, $fd, $obj) = @_;
+    my $extra_views = ($fd->isa("InterMine::Model::Reference")) ? $fd->name . ".*" : $fd->name;
     my $q = $self->{service}
                  ->resultset($cd)
-                 ->select("id", $fd->name . ".*")
-                 ->where(id => $obj->id)
-                 ->outerjoin($fd->name);
+                 ->select("id", $extra_views)
+                 ->where(id => $obj->id);
+    $q->outerjoin($fd->name) if ($fd->isa("InterMine::Model::Reference"));
     my $r = $q->first(as => 'objects');
     my $reader = "get" . ucfirst($fd->name);
     my $ref = $r->$reader;

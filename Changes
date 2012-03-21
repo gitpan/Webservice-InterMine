@@ -152,6 +152,8 @@ Revision history for Webservice-InterMine
         Added support for lazy reference fetching, as found in the Python and Ruby clients
 0.9911: Fri Feb  3 12:07:25 GMT 2012
         Added support and tests for lazy attribute fetching.
+0.9912: Wed Mar 21 12:41:34 GMT 2012
+        Added support for enrichment widgets.
 
         
 

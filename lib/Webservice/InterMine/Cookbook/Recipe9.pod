@@ -1,0 +1,53 @@
+=pod
+
+=head1 NAME
+
+Webservice::InterMine::Cookbook::Recipe1 - Using List Enrichment 
+
+=head1 SYNOPSIS
+
+  use Webservice::InterMine;
+
+  my $service = get_service("www.flymine.org/query", $MY_TOKEN);
+
+  # Being unamed, this list will be deleted when the process exits.
+  my $list = $service->new_list(type => "Gene", content => "some/file/with/identifiers.txt");
+
+  # enrichment_results is a Webservice::InterMine::ResultIterator
+  my $enrichment_results = $list->enrichment(
+    widget => "go_enrichment", 
+    maxp => 0.1, 
+    correction => "Holm-Bonferroni"
+  );
+
+  # Iterate over each result
+  while (<$it>) {
+    my $go_term = $_->{"description"};
+    my $p_value = $_->{"p-value"};
+
+    print "$go_term\t$p_value\n";
+  }
+
+=head1 DESCRIPTION
+
+List enrichment analysis results can be accessed through the web service API from version 8+. 
+Enrichment analysis allows statistical analysis of which features can be said to most strongly
+correlate with a collection of items in a list, such as GO terms, pathways, and other relationships.
+
+=head1 SEE ALSO
+
+L<Webservice::InterMine::List>
+
+=head1 AUTHOR
+
+Alex Kalderimis <perldev@flymine.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2004-2010 by Webservice::InterMine
+
+L<http://www.intermine.org>
+
+This library is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
+
+

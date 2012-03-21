@@ -59,6 +59,7 @@ use constant {
     RENAME_PATH => '/lists/rename/json',
     LISTABLE => 'Webservice::InterMine::Role::Listable',
     LIST => 'Webservice::InterMine::List',
+    ENRICHMENT_PATH => '/list/enrichment',
 };
 
 =head1 OVERLOADED OPERATIONS
@@ -506,6 +507,23 @@ sub overload_appending {
     my ($self, $other, $reversed) = @_;
     confess "Cannot append list to non-list value" if $reversed;
     $self->append($other);
+}
+
+=head2 enrichment(widget => $name, [maxp => $val, correction => $algorithm, filter => $filter])
+
+Receive results from an enrichment widget.
+
+=cut
+
+sub enrichment {
+    my ($self, %options) = @_;
+    my %form = %options;
+    $form{correction} ||= "Holm-Bonferroni";
+    $form{maxp} ||= 0.1;
+    $form{list} = $self->name;
+    my $uri = $self->service->build_uri($self->service_root . ENRICHMENT_PATH);
+    my $iterator = $self->service->get_results_iterator($uri, \%form, [], "json", "perl", []);
+    return $iterator;
 }
 
 =head2 to_query

@@ -28,6 +28,7 @@ lib/Webservice/InterMine/Cookbook/Recipe5.pod
 lib/Webservice/InterMine/Cookbook/Recipe6.pod
 lib/Webservice/InterMine/Cookbook/Recipe7.pod
 lib/Webservice/InterMine/Cookbook/Recipe8.pod
+lib/Webservice/InterMine/Cookbook/Recipe9.pod
 lib/Webservice/InterMine/Cookbook/Templates/Recipe1.pod
 lib/Webservice/InterMine/Cookbook/Templates/Recipe2.pod
 lib/Webservice/InterMine/Join.pm
@@ -125,6 +126,7 @@ t/10_acceptance/04_paths.t
 t/10_acceptance/05_summaries.t
 t/10_acceptance/06_redirection.t
 t/10_acceptance/07_lazy_references.t
+t/10_acceptance/08_enrichment.t
 t/data/bad_templates.xml
 t/data/bad_xml.txt
 t/data/default-template-queries.xml

@@ -202,11 +202,7 @@ sub _update_name {
     return unless (@_ > 2); 
     my ( $self, $name, $old_name ) = @_;
     return if ($name eq $old_name);
-    my $uri = $self->service->build_uri($self->service_root . RENAME_PATH,
-        oldname => $old_name,
-        newname => $name,
-    );
-    my $resp = $self->service->get($uri);
+    my $resp = $self->service->get(RENAME_PATH, oldname => $old_name, newname => $name);
     my $new_list = $self->factory->parse_upload_response($resp);
     $self->clear_query;
 }; 
@@ -633,7 +629,7 @@ sub append {
             my $uri = $self->service->build_uri($_->get_list_append_uri,
                 listName => $name, path => $path, $_->get_list_request_parameters,
             );
-            $resp = $self->service->get($uri);
+            $resp = $self->service->agent->get($uri);
         },
         sub {
             my $uri = $self->service->build_uri($self->service_root . LIST_APPEND_PATH, name => $name);

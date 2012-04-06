@@ -91,6 +91,7 @@ lib/Webservice/InterMine/SortOrder.pm
 lib/Webservice/InterMine/TemplateConstraintFactory.pm
 lib/Webservice/InterMine/TemplateFactory.pm
 lib/Webservice/InterMine/Types.pm
+lib/Webservice/InterMine/User.pm
 Makefile.PL
 MANIFEST			This list of files
 META.json
@@ -127,6 +128,7 @@ t/10_acceptance/05_summaries.t
 t/10_acceptance/06_redirection.t
 t/10_acceptance/07_lazy_references.t
 t/10_acceptance/08_enrichment.t
+t/10_acceptance/09_user_info.t
 t/data/bad_templates.xml
 t/data/bad_xml.txt
 t/data/default-template-queries.xml

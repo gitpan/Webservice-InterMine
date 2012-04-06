@@ -15,7 +15,7 @@ build_requires:
 configure_requires:
   Module::Build: 0.36
 dynamic_config: 1
-generated_by: 'Module::Build version 0.38, CPAN::Meta::Converter version 2.112150'
+generated_by: 'Module::Build version 0.38, CPAN::Meta::Converter version 2.110440'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -24,7 +24,7 @@ name: Webservice-InterMine
 provides:
   Webservice::InterMine:
     file: lib/Webservice/InterMine.pm
-    version: 0.9912
+    version: 0.9913
   Webservice::InterMine::Constraint:
     file: lib/Webservice/InterMine/Constraint.pm
     version: 0
@@ -244,6 +244,9 @@ provides:
   Webservice::InterMine::Types:
     file: lib/Webservice/InterMine/Types.pm
     version: 0
+  Webservice::InterMine::User:
+    file: lib/Webservice/InterMine/User.pm
+    version: 0
 recommends:
   Perl::Tidy: 20070801
   Spreadsheet::WriteExcel: 0
@@ -279,4 +282,4 @@ requires:
   perl: v5.8.3
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.9912
+version: 0.9913

@@ -158,7 +158,7 @@ sub basic_service : Test(3) {
 
 sub auth_service : Test(2) {
     my $test = shift;
-    my @args = ( root => $test->fake_queryurl, user => 'Foo', pass => 'Bar' );
+    my @args = ( root => $test->fake_queryurl, username => 'Foo', pass => 'Bar' );
     $SIG{__WARN__} = sub {};
     my $service;
     lives_ok {$service = $test->class->new(@args)};
@@ -170,13 +170,13 @@ sub bad_services : Test(5) {
     my $test = shift;
     my @args = ( root => $test->fake_queryurl );
 
-    throws_ok {$test->class->new(@args, user => "Foo")} qr/not both/, 
+    throws_ok {$test->class->new(@args, username => "Foo")} qr/not both/, 
         "demands a password for a user";
 
     throws_ok {$test->class->new(@args, pass => "Foo")} qr/not both/, 
         "demands a user for a password";
 
-    throws_ok {$test->class->new(@args, user => "Foo", pass => "Foo", token => "Foo")} qr/choose only one/,
+    throws_ok {$test->class->new(@args, username => "Foo", pass => "Foo", token => "Foo")} qr/choose only one/,
         "doesn't accept tokens and passwords";
 
     $test->{version} = 5;

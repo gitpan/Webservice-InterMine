@@ -60,7 +60,7 @@ require Webservice::InterMine::Model;
 my @JSON_FORMATS = (qw/jsonobjects jsonrows jsondatatable json/);
 my @SIMPLE_FORMATS = (qw/tsv tab csv count xml/);
 
-=head2 new( $url, [$user, $pass] )
+=head2 new( $url, [$username, $pass] )
 
 A service can be constructed directly by passing a webservice
 url to the new method. To have access to private data (personal
@@ -75,7 +75,7 @@ around BUILDARGS => sub {
     my @build_args = @_;
     my %args;
     if      ( @_ == 3 ) {
-        @args{qw/root user pass/} = @build_args;
+        @args{qw/root username pass/} = @build_args;
     } elsif ( @_ == 2 and $_[0] ne "root" ) {
         @args{qw/root token/} = @build_args;
     } elsif ( @_ == 1 ) {
@@ -89,13 +89,13 @@ around BUILDARGS => sub {
 # validate the initial state of the object
 sub BUILD {
     my $self = shift;
-    if ($self->has_user and $self->version >= 6) {
+    if ($self->has_username and $self->version >= 6) {
         warnings::warnif("deprecated", "The use of username and password authentication is deprecated. Please use API token authentication");
     }
-    if ($self->has_user xor $self->has_pass) {
+    if ($self->has_username xor $self->has_pass) {
         croak "User name or password supplied, but not both";
     }
-    if ($self->has_user and $self->has_token) {
+    if ($self->has_username and $self->has_token) {
         croak "Both user/password and token credentials supplied. Please choose only one";
     }
     if ($self->has_token and ($self->version < 6)) {
@@ -130,17 +130,20 @@ use constant {
 
     POSSIBLE_VALUES_PATH       => '/path/values',
 
+    TOKEN_PATH                 => '/user/token',
+    WHO_AM_I_PATH              => '/user/whoami',
+
     USER_AGENT                 => 'WebserviceInterMinePerlAPIClient',
 };
 
 =head1 CONSTRUCTION
 
-=head2 Webservice::InterMine->get_service($root, $user, $pass)
+=head2 Webservice::InterMine->get_service($root, ($username, $pass | $token))
 
 Typically as service is most conveniently obtained through the
 L<Webservice::InterMine> interface. 
 
-=head2 new($root, $user, $pass)
+=head2 new( $root, $user, $pass ) OR new( $root, $token )
 
 It can of course be instantiated directly, with a standard call to new.
 
@@ -168,7 +171,7 @@ has root => (
     handles  => { host => 'host', },
 );
 
-for my $attr (qw/user pass token/) {
+for my $attr (qw/username pass token/) {
     has $attr => (is => 'ro', isa => Str, predicate => 'has_' . $attr);
 }
 
@@ -237,8 +240,13 @@ has agent => (
     is => 'ro', 
     isa => UserAgent,
     lazy_build => 1,
-    handles => ['get', 'post'],
+    handles => ['post']
 );
+
+sub get {
+    my ( $self, $path, @params ) = @_;
+    return $self->agent->get($self->build_uri($self->root . $path, $self->build_params(@params)));
+}
 
 sub _build_agent {
     my $self = shift;
@@ -254,8 +262,8 @@ sub _build_agent {
 
 sub get_authstring {
     my $self = shift;
-    if ($self->has_user and $self->has_pass) {
-        my $auth_string = join(':', $self->user, $self->pass);
+    if ($self->has_username and $self->has_pass) {
+        my $auth_string = join(':', $self->username, $self->pass);
         return encode_base64($auth_string);
     }
     return undef;
@@ -667,6 +675,46 @@ sub apply_roles {
     my $combined_roles = Moose::Meta::Role->combine(map {[$_]} @$roles);
     $combined_roles->apply($instance);
     return $instance;
+}
+
+=head2 user
+
+Get a representation of the currently logged-in user, or undef if not logged in.
+See L<Webservice::InterMine::User>
+
+=cut
+
+sub user {
+    my $self = shift;
+    my %args;
+    require JSON;
+    require Webservice::InterMine::User;
+
+    my $fetch_extra_attr = sub {
+        my ( $path, $extractor ) = @_;
+        my $res = $self->get($path);
+        if ( $res->is_success ) {
+            my $body = $res->content;
+            $_ = JSON::decode_json( $body );
+            my $attr = $extractor->();
+            return $attr;
+        } else {
+            if ( my $body = $res->content ) {
+                my $data = JSON::decode_json($body);
+                croak( $data->{error} );
+            }
+            croak( $res->status_line );
+        }
+    };
+
+    if ($self->username) {
+        $args{name} = $self->username;
+        $args{token} = $fetch_extra_attr->( TOKEN_PATH, sub { $_->{token} } );
+    } else {
+        $args{name} = $fetch_extra_attr->( WHO_AM_I_PATH, sub { $_->{user}{username} } );
+        $args{token} = $self->token;
+    }
+    return Webservice::InterMine::User->new(%args);
 }
 
 =head2 INTERNAL METHODS

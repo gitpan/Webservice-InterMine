@@ -5,7 +5,7 @@ NAME
 SYNOPSIS
         use Webservice::InterMine;
 
-        my $service  = get_service($url, $user, $pass);
+        my $service  = get_service($url, $token);
         my $template = $service->template($name);
         my $results  = $template->results_with(valueA => 'x', valueB => 'y');
 
@@ -90,7 +90,7 @@ INSTALLATION AND DEPENDENCIES
 
     The same, with explicit, named parameters:
 
-        use Webservice::InterMine root => 'flymine', user => 'username', pass => 'password';
+        use Webservice::InterMine root => 'flymine', username => 'username', pass => 'password';
 
     Calling "use Webservice::InterMine" without any parameters simply means
     you need to either specify the webservice url on every call, or call the
@@ -174,7 +174,7 @@ METHODS
 
     Parameters:
 
-    *   from => [url, user, pass]
+    *   from => [url, username, pass]
 
         An array ref of arguments to pass to get_service. This information
         can be used to specify a different service than the one named on

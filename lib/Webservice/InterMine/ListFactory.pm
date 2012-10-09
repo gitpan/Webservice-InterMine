@@ -237,7 +237,11 @@ sub get_lists_with_object {
     my $self = shift;
     my $obj = shift;
     my $obj_id = eval {$obj->{objectId}} || $obj;
-    my $str = $self->service->get($self->service->LISTS_WITH_OBJ_PATH, id => $obj_id)->decoded_content;
+    my $uri = $self->service->build_uri(
+        $self->service_root . $self->service->LISTS_WITH_OBJ_PATH,
+        id => $obj_id,
+    );
+    my $str = $self->service->get($uri)->decoded_content;
     my $parsed = $self->decode($str);
     unless ($parsed->{wasSuccessful}) {
         confess $parsed->{error};
@@ -292,13 +296,14 @@ sub subtract {
             . join(' and ', @ref_names);
     my $tags = shift || [];
 
-    my $resp = $self->service->get( SUBTRACTION_PATH,
+    my $uri = $self->service->build_uri($self->service_root . SUBTRACTION_PATH,
         name => $name,
         description => $description,
         references => join(';', @ref_names),
         subtract => join(';', @list_names),
         tags => join(';', @$tags),
     );
+    my $resp = $self->service->get($uri);
     return $self->parse_upload_response($resp);
 }
 
@@ -337,11 +342,12 @@ sub _do_commutative_list_operation {
     my $name        = shift || $self->get_unused_list_name;
     my $description = shift || $operation . " of " . join(' and ', @list_names);
 
-    my $resp = $self->service->get( $path, 
+    my $uri = $self->service->build_uri($self->service_root . $path,
         name => $name,
         lists => join(';', @list_names),
         description => $description,
     );
+    my $resp = $self->service->get($uri);
     return $self->parse_upload_response($resp);
 }
 
@@ -438,7 +444,9 @@ sub get_tags {
     my %params = (
         name => $list->name,
     );
-    my $resp = $self->service->get(LIST_TAG_PATH, %params);
+    my $uri = $self->service->build_uri(
+        $self->service_root . LIST_TAG_PATH, %params);
+    my $resp = $self->service->get($uri);
     $self->check_response_for_error($resp);
     my $data = $self->decode($resp->content);
     return @{ $data->{tags} };

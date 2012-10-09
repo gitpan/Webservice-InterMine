@@ -147,15 +147,16 @@ Revision history for Webservice-InterMine
 0.9908: Tue Jan 10 18:38:04 GMT 2012
         Use general roles to allow better subclassing.
 0.9909: Tue Jan 10 19:00:18 GMT 2012
-        Bug fix release for correct role use to allow extension.
+        Bux fix release for correct role use to allow extension.
 0.9910: Wed Jan 18 14:15:52 GMT 2012
         Added support for lazy reference fetching, as found in the Python and Ruby clients
 0.9911: Fri Feb  3 12:07:25 GMT 2012
         Added support and tests for lazy attribute fetching.
 0.9912: Wed Mar 21 12:41:34 GMT 2012
         Added support for enrichment widgets.
-0.9913: Thu Apr  5 15:51:03 BST 2012
-        Added support for user services (fetching username and token).
+1.0000: Tue Oct  9 13:39:20 BST 2012
+        Added support for range constraints.
+        Updated tests
 
         
 

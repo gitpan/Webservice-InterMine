@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = "0.9913";
+our $VERSION = "1.0000";
 
 =head1 NAME
 
@@ -14,7 +14,7 @@ Webservice::InterMine - modules for interacting with InterMine datawarehouse web
 
     use Webservice::InterMine;
 
-    my $service  = get_service($url, $token);
+    my $service  = get_service($url, $user, $pass);
     my $template = $service->template($name);
     my $results  = $template->results_with(valueA => 'x', valueB => 'y');
 
@@ -97,7 +97,7 @@ The same, but with authentication supplied username and password credentials: (d
 
 The same, with explicit, named parameters:
 
-    use Webservice::InterMine root => 'flymine', username => 'username', pass => 'password';
+    use Webservice::InterMine root => 'flymine', user => 'username', pass => 'password';
   
 Calling C<use Webservice::InterMine> without any parameters simply
 means you need to either specify the webservice url on every call, or
@@ -221,7 +221,7 @@ Parameters:
 
 =over
 
-=item * from => [url, username, pass]
+=item * from => [url, user, pass]
 
 An array ref of arguments to pass to get_service. This information
 can be used to specify a different service than the one named on import, or
@@ -451,21 +451,19 @@ sub get_service {
         $url = $hash{root};
     }
 
-    my $key = join('|', @args);
-
     # Prefer a keyword parameter, then take the first positional parameter,
     # then fallback to the default service url
     $url = $url || $_[0] || $service_url;
     croak "No url provided - either directly or on 'use'"
       unless $url;
-    if ( $services{$key} || $services{$url} ) {
-        return $services{$key} || $services{$url};
+    if ( $services{$url} ) {
+        return $services{$url};
     }
 
     my $service = Webservice::InterMine::Service->new( @args );
 
     # Store service under both user supplied and expanded form
-    $services{$key} = $service;
+    $services{$url} = $service;
     $services{$service->root} = $service;
     return $service;
 }

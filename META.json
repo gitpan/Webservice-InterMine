@@ -57,7 +57,7 @@
             "Module::Find" : "0.05",
             "Moose" : "0.95",
             "MooseX::Role::WithOverloading" : "0.03",
-            "MooseX::Types" : "0.22",
+            "MooseX::Types" : "0.34",
             "Perl6::Junction" : 0,
             "Pod::Usage" : 0,
             "Scalar::Util" : 0,
@@ -73,7 +73,7 @@
    "provides" : {
       "Webservice::InterMine" : {
          "file" : "lib/Webservice/InterMine.pm",
-         "version" : "1.0000"
+         "version" : "1.0100"
       },
       "Webservice::InterMine::Constraint" : {
          "file" : "lib/Webservice/InterMine/Constraint.pm",
@@ -374,5 +374,5 @@
          "http://dev.perl.org/licenses/"
       ]
    },
-   "version" : "1.0000"
+   "version" : "1.0100"
 }

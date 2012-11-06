@@ -24,7 +24,7 @@ WriteMakefile
                    'Module::Find' => '0.05',
                    'Moose' => '0.95',
                    'MooseX::Role::WithOverloading' => '0.03',
-                   'MooseX::Types' => '0.22',
+                   'MooseX::Types' => '0.34',
                    'Perl6::Junction' => 0,
                    'Pod::Usage' => 0,
                    'Scalar::Util' => 0,

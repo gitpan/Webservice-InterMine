@@ -37,6 +37,7 @@ lib/Webservice/InterMine/ListFactory.pm
 lib/Webservice/InterMine/LogicalOperator.pm
 lib/Webservice/InterMine/LogicalSet.pm
 lib/Webservice/InterMine/LogicParser.pm
+lib/Webservice/InterMine/Model.pm
 lib/Webservice/InterMine/Parser.pm
 lib/Webservice/InterMine/Parser/FlatFile.pm
 lib/Webservice/InterMine/Parser/JSON.pm
@@ -86,11 +87,17 @@ lib/Webservice/InterMine/Role/Serviced.pm
 lib/Webservice/InterMine/Role/Showable.pm
 lib/Webservice/InterMine/Service.pm
 lib/Webservice/InterMine/ServiceResolver.pm
+lib/Webservice/InterMine/Simple.pm
+lib/Webservice/InterMine/Simple/Query.pm
+lib/Webservice/InterMine/Simple/Service.pm
+lib/Webservice/InterMine/Simple/Template.pm
 lib/Webservice/InterMine/SortOrder.pm
 lib/Webservice/InterMine/TemplateConstraintFactory.pm
 lib/Webservice/InterMine/TemplateFactory.pm
 lib/Webservice/InterMine/Types.pm
+Makefile.PL
 MANIFEST			This list of files
+META.json
 README
 t/00-load.t
 t/01_path/01_validate.t
@@ -168,6 +175,4 @@ t/tests/Test/Webservice/InterMine/SortOrder.pm
 t/tests/Test/Webservice/InterMine/TemplateConstraintFactory.pm
 t/tests/Test/Webservice/InterMine/TemplateConstraints.pm
 t/tests/Test/Webservice/InterMine/TemplateFactory.pm
-Makefile.PL
 META.yml
-META.json

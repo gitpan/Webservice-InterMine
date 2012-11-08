@@ -73,7 +73,7 @@
    "provides" : {
       "Webservice::InterMine" : {
          "file" : "lib/Webservice/InterMine.pm",
-         "version" : "1.0100"
+         "version" : "1.0101"
       },
       "Webservice::InterMine::Constraint" : {
          "file" : "lib/Webservice/InterMine/Constraint.pm",
@@ -153,6 +153,10 @@
       },
       "Webservice::InterMine::LogicalSet" : {
          "file" : "lib/Webservice/InterMine/LogicalSet.pm",
+         "version" : 0
+      },
+      "Webservice::InterMine::Model" : {
+         "file" : "lib/Webservice/InterMine/Model.pm",
          "version" : 0
       },
       "Webservice::InterMine::Parser" : {
@@ -351,6 +355,18 @@
          "file" : "lib/Webservice/InterMine/ServiceResolver.pm",
          "version" : 0
       },
+      "Webservice::InterMine::Simple" : {
+         "file" : "lib/Webservice/InterMine/Simple.pm",
+         "version" : 0
+      },
+      "Webservice::InterMine::Simple::Query" : {
+         "file" : "lib/Webservice/InterMine/Simple/Query.pm",
+         "version" : 0
+      },
+      "Webservice::InterMine::Simple::Service" : {
+         "file" : "lib/Webservice/InterMine/Simple/Service.pm",
+         "version" : 0
+      },
       "Webservice::InterMine::SortOrder" : {
          "file" : "lib/Webservice/InterMine/SortOrder.pm",
          "version" : 0
@@ -374,5 +390,5 @@
          "http://dev.perl.org/licenses/"
       ]
    },
-   "version" : "1.0100"
+   "version" : "1.0101"
 }

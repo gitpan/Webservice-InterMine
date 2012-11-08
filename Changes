@@ -158,6 +158,8 @@ Revision history for Webservice-InterMine
         Added support for range constraints.
         Updated tests
 1.0100: Fixed error installing under MooseX::Types 0.34
+1.0101: Thu Nov  8 19:02:17 GMT 2012
+        Adding missing file to Manifest.
 
         
 

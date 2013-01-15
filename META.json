@@ -73,7 +73,7 @@
    "provides" : {
       "Webservice::InterMine" : {
          "file" : "lib/Webservice/InterMine.pm",
-         "version" : "1.0104"
+         "version" : "1.0200"
       },
       "Webservice::InterMine::Constraint" : {
          "file" : "lib/Webservice/InterMine/Constraint.pm",
@@ -129,6 +129,10 @@
       },
       "Webservice::InterMine::ConstraintFactory" : {
          "file" : "lib/Webservice/InterMine/ConstraintFactory.pm",
+         "version" : 0
+      },
+      "Webservice::InterMine::IDResolutionJob" : {
+         "file" : "lib/Webservice/InterMine/IDResolutionJob.pm",
          "version" : 0
       },
       "Webservice::InterMine::Join" : {
@@ -378,5 +382,5 @@
          "http://dev.perl.org/licenses/"
       ]
    },
-   "version" : "1.0104"
+   "version" : "1.0200"
 }

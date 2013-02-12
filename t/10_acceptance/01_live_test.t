@@ -15,12 +15,14 @@ my $do_live_tests = $ENV{RELEASE_TESTING};
 unless ($do_live_tests) {
     plan( skip_all => "Acceptance tests for release testing only" );
 } else {
-    plan( tests => 191 );
+    plan( tests => 192 );
 }
+
+my $url = $ENV{TESTMODEL_URL} || 'http://localhost:8080/intermine-test/service';
+note("Testing against $url");
 
 my $module = 'Webservice::InterMine';
 
-my $url = 'http://localhost:8080/intermine-test/service';
 my @view = ('Employee.name', 'Employee.age', 'Employee.fullTime',
     'Employee.address.address', 'Employee.department.name',
     'Employee.department.company.name',
@@ -34,19 +36,19 @@ isa_ok($module->get_service, 'Webservice::InterMine::Service', "The service it m
 throws_ok(
     sub {$module->get_service("not.a.good.url")},
     qr/Uri does not look like a service url/,
-    "Throws an error at bad urls",
+    "Throws an error at urls that don't have paths",
 );
 
 throws_ok(
     sub {$module->get_service("not.a.good.url/with/path")},
     qr/Can't connect/,
-    "Throws an error at bad urls",
+    "Throws an error at bad urls that don't resolve to anything",
 );
 
 throws_ok(
-    sub {$module->get_service("http://localhost:8080/intermine-test/foo/")},
+    sub {$module->get_service("$url/foo/")},
     qr/version.*please check the url/,
-    "Throws an error at bad urls",
+    "Throws an error at urls that resolve but which don't seem interminy",
 );
 
 ok($module->get_service->version >= 6, "Service version is correct");
@@ -505,7 +507,8 @@ TEST_IMPORTED_FNS: {
 
 TEST_LIST_STATUS: {
     #my @lists = get_service("www.flymine.org/query")->get_lists();
-    my @lists = get_service("localhost/intermine-test", "test-user-token")->get_lists();
+    my @lists = get_service($url, "test-user-token")->get_lists();
+    ok(~~@lists, "There are some lists");
     ok($lists[0]->has_status, "Status is provided");
     my %possible_statuses = (CURRENT => 1, TO_UPGRADE => 1, NOT_CURRENT => 1);
     ok($possible_statuses{$lists[0]->status}, "And list is one of the possible statuses");

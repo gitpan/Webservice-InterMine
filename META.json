@@ -4,7 +4,7 @@
       "Alex Kalderimis <dev@intermine.org>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.38, CPAN::Meta::Converter version 2.112621",
+   "generated_by" : "Module::Build version 0.38, CPAN::Meta::Converter version 2.112150",
    "license" : [
       "perl_5"
    ],
@@ -73,7 +73,7 @@
    "provides" : {
       "Webservice::InterMine" : {
          "file" : "lib/Webservice/InterMine.pm",
-         "version" : "1.0400"
+         "version" : "1.0401"
       },
       "Webservice::InterMine::Constraint" : {
          "file" : "lib/Webservice/InterMine/Constraint.pm",
@@ -382,5 +382,5 @@
          "http://dev.perl.org/licenses/"
       ]
    },
-   "version" : "1.0400"
+   "version" : "1.0401"
 }

@@ -73,7 +73,7 @@
    "provides" : {
       "Webservice::InterMine" : {
          "file" : "lib/Webservice/InterMine.pm",
-         "version" : "1.0401"
+         "version" : "1.0402"
       },
       "Webservice::InterMine::Constraint" : {
          "file" : "lib/Webservice/InterMine/Constraint.pm",
@@ -382,5 +382,5 @@
          "http://dev.perl.org/licenses/"
       ]
    },
-   "version" : "1.0401"
+   "version" : "1.0402"
 }

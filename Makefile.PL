@@ -38,6 +38,7 @@ WriteMakefile
                    'Test::XML' => 0,
                    'Time::HiRes' => 0,
                    'URI' => '1.37',
+                   'XML::Compare' => '0.04',
                    'XML::DOM' => 0,
                    'XML::Parser::PerlSAX' => '0.08',
                    'XML::Rules' => 0

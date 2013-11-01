@@ -24,6 +24,7 @@
             "Test::MockObject::Extends" : 0,
             "Test::More" : "0.9",
             "Test::XML" : 0,
+            "XML::Compare" : "0.04",
             "XML::Rules" : 0
          }
       },
@@ -54,6 +55,7 @@
             "LWP" : "5.8",
             "List::MoreUtils" : "0.22",
             "MIME::Base64" : 0,
+            "Module::Build" : 0,
             "Module::Find" : "0.05",
             "Moose" : "0.95",
             "MooseX::Role::WithOverloading" : "0.03",
@@ -73,7 +75,7 @@
    "provides" : {
       "Webservice::InterMine" : {
          "file" : "lib/Webservice/InterMine.pm",
-         "version" : "1.0402"
+         "version" : "1.0403"
       },
       "Webservice::InterMine::Constraint" : {
          "file" : "lib/Webservice/InterMine/Constraint.pm",
@@ -382,5 +384,5 @@
          "http://dev.perl.org/licenses/"
       ]
    },
-   "version" : "1.0402"
+   "version" : "1.0403"
 }
